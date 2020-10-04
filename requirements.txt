@@ -20,10 +20,12 @@ dash-daq==0.5.0
 dash-html-components==1.1.1
 dash-renderer==1.8.2
 dash-table==4.10.1
-Django==3.1.1
+Django==1.5.11
 django-angular==2.3
+django-mongodb-engine==0.6.0
 django-plotly-dash==1.4.2
 django-redis==4.12.1
+djangotoolbox==1.8.0
 dpd-components==0.1.0
 dpd-static-support==0.0.5
 Flask==1.1.2
@@ -42,6 +44,7 @@ pyasn1==0.4.8
 pyasn1-modules==0.2.8
 pycparser==2.20
 PyHamcrest==2.0.2
+pymongo==3.11.0
 pyOpenSSL==19.1.0
 pytz==2020.1
 redis==3.5.3
