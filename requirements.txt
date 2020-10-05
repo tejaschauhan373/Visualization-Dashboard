@@ -20,7 +20,7 @@ dash-daq==0.5.0
 dash-html-components==1.1.1
 dash-renderer==1.8.2
 dash-table==4.10.1
-Django==1.5.11
+Django==3.1.1
 django-angular==2.3
 django-mongodb-engine==0.6.0
 django-plotly-dash==1.4.2
