@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.urls import path, include
 
 urlpatterns = [
-    path('', include('monitoring.urls')),
+    path('monitoring/', include('monitoring.urls')),
     path('django_plotly_dash/', include('django_plotly_dash.urls')),
     path('reatiler/', include('online_retailers.urls')),
     path('dashboard/', include('dashboard.urls')),

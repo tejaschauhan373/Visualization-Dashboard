@@ -1,11 +1,8 @@
-{% load static %}
-{% load staticfiles %}
-
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-
+{% load static %}
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -26,12 +23,12 @@
 </head>
 
 <body id="page-top">
-
+{% load static %}
   <!-- Page Wrapper -->
   <div id="wrapper">
 
     <!-- Sidebar -->
-    {% include 'partials/_sidebar.html' %}
+    {% include '_sidebar.html' %}
     <!-- End of Sidebar -->
 
     <!-- Content Wrapper -->
@@ -41,7 +38,7 @@
       <div id="content">
 
         <!-- Topbar -->
-{% include 'partials/_topbar.html' %}
+{% include '_topbar.html' %}
         <!-- End of Topbar -->
 
         <!-- Begin Page Content -->
@@ -63,7 +60,7 @@
       <!-- End of Main Content -->
 
       <!-- Footer -->
-      {% include 'partials/_footer.html' %}
+      {% include 'footer.html' %}
       <!-- End of Footer -->
 
     </div>
