@@ -1,0 +1,75 @@
+{% extends 'basic.html' %}
+
+{% block content %}
+{% load static %}
+
+<div style="margin-top: 15px; margin-bottom:30px;">
+    <form action="/dashboard/home/" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="file"
+               title="Upload excel file"
+               name="excel_file"
+               style="border: 1px solid black; padding: 5px;"
+               required="required">
+
+            <input type="submit"
+                   value="Upload"
+                   style="border: 1px solid green; padding:5px; border-radius: 2px; cursor: pointer;">
+    </form>
+</div>
+
+
+    <table id="dtVerticalScrollExample" class="table table-striped table-bordered table-lg scroll" cellspacing="0"
+           width="100%">
+<!--        <thead>-->
+<!--        <tr>-->
+<!--            <th class="th-sm">Name-->
+<!--            </th>-->
+<!--            <th class="th-sm">Position-->
+<!--            </th>-->
+<!--            <th class="th-sm">Office-->
+<!--            </th>-->
+<!--            <th class="th-sm">Age-->
+<!--            </th>-->
+<!--            <th class="th-sm">Start date-->
+<!--            </th>-->
+<!--            <th class="th-sm">Salary-->
+<!--            </th>-->
+<!--        </tr>-->
+<!--        </thead>-->
+        <tbody>
+        {% for row in excel_data %}
+        <tr>
+            {% for cell in row %}
+            <td>{{ cell }}&nbsp;&nbsp;</td>
+            {%endfor%}
+        </tr>
+        {%endfor%}
+
+        </tbody>
+<!--        <tfoot>-->
+<!--        <tr>-->
+<!--            <th>Name-->
+<!--            </th>-->
+<!--            <th>Position-->
+<!--            </th>-->
+<!--            <th>Office-->
+<!--            </th>-->
+<!--            <th>Age-->
+<!--            </th>-->
+<!--            <th>Start date-->
+<!--            </th>-->
+<!--            <th>Salary-->
+<!--            </th>-->
+<!--        </tr>-->
+<!--        </tfoot>-->
+    </table>
+
+
+  {% autoescape off %}
+  {{ plot_div }}
+  {% endautoescape %}
+
+<br>
+
+{%endblock%}

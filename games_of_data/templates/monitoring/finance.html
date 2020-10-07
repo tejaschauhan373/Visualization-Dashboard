@@ -1,0 +1,12 @@
+{% extends 'basic.html' %}
+
+{% block content %}
+{% load static %}
+
+  {% autoescape off %}
+  {{ plot_div }}
+  {% endautoescape %}
+
+<br>
+
+{%endblock%}
