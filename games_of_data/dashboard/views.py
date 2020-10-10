@@ -46,3 +46,6 @@ def home(request):
     return render(request, "dashboard/dash.html", context={'plot_div': plot_div,
                                                            "excel_data":excel_data,
                                                            "excel_heading":excel_heading})
+
+def form1(request):
+    return render(request,"dashboard/form1.html")
