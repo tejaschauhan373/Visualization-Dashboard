@@ -138,8 +138,6 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR,'games_of_data/static')
 ]
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-
 PLOTLY_COMPONENTS = [
     'dash_core_components',
     'dash_html_components',
@@ -157,3 +155,7 @@ CHANNEL_LAYERS = {
         },
     },
 }
+
+
+MEDIA_ROOT = os.path.join(BASE_DIR,'games_of_data\static\media')
+MEDIA_URL = 'media/'
