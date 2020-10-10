@@ -1,9 +1,11 @@
-from django.shortcuts import render
+from django.shortcuts import render,HttpResponse
 from plotly.offline import plot
 import plotly.graph_objs as go
 import openpyxl
 import pandas as pd
 import numpy as np
+from django.conf import settings
+from .models import Customer
 from django.core.files.storage import FileSystemStorage
 # Create your views here.
 
@@ -13,10 +15,10 @@ def table_upload(request):
         return render(request, 'dashboard/tables.html', {})
     else:
         excel_file = request.FILES["excel_file"]
-        fs = FileSystemStorage()
-        fs.save(excel_file.name,excel_file)
-        # you may put validations here to check extension or file size
         df = pd.read_excel(excel_file)
+        csv_file = df.to_csv(settings.MEDIA_ROOT+'/'+(excel_file.name).replace('.xlsx','.csv'))
+        # you may put validations here to check extension or file size
+
         dataframe = df
         print(df.columns)
         wb = openpyxl.load_workbook(excel_file)
@@ -62,3 +64,50 @@ def chartjs(request):
     print(categ_columns)
     return render(request,'dashboard/chart.html',{'categ_columns':categ_columns,
                                                   'num_columns':num_columns})
+
+def login(request):
+    return render(request,'login.html')
+
+def signup(request):
+    return render(request, 'register.html')
+
+
+def register(request):
+    fname = request.POST.get('firstname')
+    lname = request.POST.get('lastname')
+    uname = request.POST.get('username')
+    pwd = request.POST.get('password')
+    cpassword = request.POST.get('cpassword')
+    usr = Customer.objects.filter(username=uname)
+    if len(usr) == 0 and  pwd == cpassword:
+        newuser = Customer.objects.create(username=uname, password=pwd, first_name=fname, last_name=lname)
+        newuser.save()
+        nuser = Customer.objects.get(username=uname)
+        print(nuser.user_id)
+        return render(request,'basic.html',{})
+    else:
+        print("here")
+        return render(request, 'register.html', {'error': 'This username already exists'})
+
+
+
+def auth_user(request):
+    user = Customer.objects.filter(username=request.POST.get('username')).first()
+    if user is not None:
+        if user.password == request.POST.get('password'):
+            request.session['user'] = user.user_id
+            request.session['fname'] = user.first_name
+            request.session['lname'] = user.last_name
+            return render(request,'basic.html',{})
+        else:
+            return HttpResponse('invalid password')
+    else:
+        return HttpResponse('invalid username or password')
+
+
+def logout(request):
+    try:
+        del request.session['user']
+    except KeyError:
+        pass
+    return HttpResponse("You're logged out.")
