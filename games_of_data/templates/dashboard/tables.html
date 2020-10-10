@@ -1,0 +1,89 @@
+{% extends 'basic.html' %}
+{%load static%
+{%block content%}
+
+            <div id="layoutSidenav_content">
+                <main>
+                    <div class="container-fluid">
+                        <h1 class="mt-4">Tables</h1>
+                        <ol class="breadcrumb mb-4">
+                            <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+                            <li class="breadcrumb-item active">Tables</li>
+                        </ol>
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <form action="/dashboard/table/upload/" method="post" enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                    <div class="input-group">
+                                         <div class="input-group-prepend">
+                                                <span class="input-group-text" id="inputGroupFileAddon01">Upload</span>
+                                        </div>
+                                        <div class="custom-file">
+                                            <input type="file" class="custom-file-input" id="inputGroupFile01"
+                                                    aria-describedby="inputGroupFileAddon01"
+                                                    title="Upload excel file"
+                                                    name="excel_file"
+                                                    required="required">
+                                            <label class="custom-file-label" for="inputGroupFile01" id="file-upload-filename">Choose file</label>
+                                        </div>
+                                        <div class="input-group-prepend" style = "margin-left:10px;" >
+                                           <input type = 'submit' value="Upload" style = 'border-style:1px;'>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <i class="fas fa-table mr-1"></i>
+                                DataTable Example
+                            </div>
+                            <div class="card-body">
+
+                                <div class="table-responsive">
+                                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                        <thead>
+                                            <tr>
+                                                {%for heading in excel_heading%}
+                                                    <th>{{heading}}&nbsp;&nbsp;</th>
+                                                {%endfor%}
+                                            </tr>
+                                        </thead>
+                                        <tfoot>
+                                             {%for heading in excel_heading%}
+                                                    <th>{{heading}}&nbsp;&nbsp;</th>
+                                                {%endfor%}
+                                        </tfoot>
+                                        <tbody>
+                                            {% for row in excel_data %}
+                                                <tr>
+                                                    {% for cell in row %}
+                                                    <td>{{ cell }}&nbsp;&nbsp;</td>
+                                                    {%endfor%}
+                                                </tr>
+                                            {%endfor%}
+
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </main>
+                <footer class="py-4 bg-light mt-auto">
+                    <div class="container-fluid">
+                        <div class="d-flex align-items-center justify-content-between small">
+                            <div class="text-muted">Copyright &copy; Your Website 2020</div>
+                            <div>
+                                <a href="#">Privacy Policy</a>
+                                &middot;
+                                <a href="#">Terms &amp; Conditions</a>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+{%endblock%}
