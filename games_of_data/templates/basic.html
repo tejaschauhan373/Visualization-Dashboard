@@ -8,9 +8,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="">
   <meta name="author" content="">
-  <style>
-
-  </style>
 
   <title>SB Admin 2 - Dashboard</title>
 
@@ -22,8 +19,7 @@
 
   <!-- Custom styles for this template-->
   <link href="{% static 'css/sb-admin-2.min.css' %}" rel="stylesheet">
-  <link href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.min.css" rel="stylesheet">
-
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 
 
 </head>
@@ -115,20 +111,7 @@
   <!-- Page level custom scripts -->
   <script src="{% static 'js/demo/chart-area-demo.js' %}"></script>
   <script src="{% static 'js/demo/chart-pie-demo.js' %}"></script>
-  <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-<script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-<script>
 
-$(document).ready(function() {
-    $('#example').DataTable( {
-        scrollY:        '20vh',
-        scrollCollapse: true,
-        paging:         true
-    } );
-} );
-
-</script>
 </body>
 
 </html>
