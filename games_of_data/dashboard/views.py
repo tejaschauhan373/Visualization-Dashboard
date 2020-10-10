@@ -20,22 +20,13 @@ def home(request):
         print(worksheet)
 
         excel_data = list()
-        excel_heading = list()
         # iterating over the rows and
         # getting value from each cell in row
-        i=0
         for row in worksheet.iter_rows():
-            if(i==0):
-                h_data = list()
-                for cell in row:
-                    excel_heading.append(str(cell.value))
-                i = i+1
-            else:
-                row_data = list()
-                for cell in row:
-                    row_data.append(str(cell.value))
-                    excel_data.append(row_data)
-
+            row_data = list()
+            for cell in row:
+                row_data.append(str(cell.value))
+            excel_data.append(row_data)
 
     x_data = [0, 1, 2, 3]
     y_data = [x ** 2 for x in x_data]
@@ -44,5 +35,7 @@ def home(request):
                              opacity=0.8)],
                     output_type='div')
     return render(request, "dashboard/dash.html", context={'plot_div': plot_div,
-                                                           "excel_data":excel_data,
-                                                           "excel_heading":excel_heading})
+                                                           "excel_data":excel_data})
+
+def form1(request):
+    return render(request,'dashboard/form1.html')
