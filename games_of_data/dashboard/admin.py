@@ -3,5 +3,5 @@ from .models import Customer
 # Register your models here.
 
 @admin.register(Customer)
-class CustomerAdmin(admin.ModelAdmin):
+class DashboardAdmin(admin.ModelAdmin):
     list_display =("user_id","username","password","first_name","last_name")

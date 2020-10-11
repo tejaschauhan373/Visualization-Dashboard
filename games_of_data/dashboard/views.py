@@ -18,33 +18,25 @@ def table_upload(request):
         df = pd.read_excel(excel_file)
         csv_file = df.to_csv(settings.MEDIA_ROOT+'/'+(excel_file.name).replace('.xlsx','.csv'))
         # you may put validations here to check extension or file size
-
-        dataframe = df
-        print(df.columns)
-        wb = openpyxl.load_workbook(excel_file)
-
-        # getting a particular sheet by name out of many sheets
-        worksheet = wb["Sheet1"]
-        print(worksheet)
+        request.session['file'] = (excel_file.name).replace('.xlsx','.csv')
 
         excel_data = list()
         excel_heading = list()
-        # iterating over the rows and
-        # getting value from each cell in row
-        i=0
-        for row in worksheet.iter_rows():
-            if(i==0):
-                h_data = list()
-                for cell in row:
-                    excel_heading.append(str(cell.value))
-                i = i+1
+        path = str(settings.MEDIA_ROOT + '/' + request.session.get('file'))
+        f = open(path, 'r')
+        rows = []
+        frow = list()
+        i = 0;
+        for row in f:
+            if i == 0:
+                row = row[1:].strip('\n').split(',')
+                print(row)
+                excel_heading = row
+                i = 1
             else:
-                row_data = list()
-                for cell in row:
-                    row_data.append(str(cell.value))
-                    excel_data.append(row_data)
-
-
+                row = row.strip('\n').split(',')
+                print(row)
+                excel_data.append(row[1:])
     # x_data = list(df["Country"])
     # y_data = list(df["Profit"])
     # plot_div = plot([go.Scatter(x=x_data, y=y_data,
@@ -58,10 +50,29 @@ def table_upload(request):
 def table(request):
     return render(request , 'dashboard/tables.html')
 
+def show_table(request):
+    path = str(settings.MEDIA_ROOT + '/' + request.session.get('file'))
+    f = open(path, 'r')
+    rows = []
+    frow = list()
+    i = 0;
+    for row in f:
+        if i == 0:
+            row = row[1:].strip('\n').split(',')
+            print(row)
+            frow=row
+            i=1
+        else:
+            row = row.strip('\n').split(',')
+            print(row)
+            rows.append(row[1:])
+    return render(request,'dashboard/show_table.html',context={'frow':frow,
+                                                               'rows':rows})
+
 def chartjs(request):
+    df = pd.read_csv(settings.MEDIA_ROOT + '/' + request.session.get('file'))
     categ_columns = list(dataframe.select_dtypes(exclude=np.number).columns)
     num_columns = list(dataframe.select_dtypes(include=np.number).columns)
-    print(categ_columns)
     return render(request,'dashboard/chart.html',{'categ_columns':categ_columns,
                                                   'num_columns':num_columns})
 
@@ -108,6 +119,9 @@ def auth_user(request):
 def logout(request):
     try:
         del request.session['user']
+        del request.session['fname']
+        del request.session['lname']
+        del request.session['file']
     except KeyError:
         pass
-    return HttpResponse("You're logged out.")
+    return render(request,'basic.html')

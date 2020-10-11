@@ -2,41 +2,6 @@
 {%load static%
 {%block content%}
 
-
-
-<div id="layoutSidenav">
-            <div id="layoutSidenav_nav">
-                <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
-                    <div class="sb-sidenav-menu">
-                        <div class="nav">
-                            <div class="sb-sidenav-menu-heading">Core</div>
-                            <a class="nav-link" href="index.html">
-                                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                                Dashboard
-                            </a>
-
-                            <div class="sb-sidenav-menu-heading">Numeric columns</div>
-                            {% for num_column in num_columns %}
-                            <a class="nav-link" href="charts.html">
-                                {{num_column}}
-                            </a>
-                            {% endfor %}
-
-                            <div class="sb-sidenav-menu-heading">Categoryu columns</div>
-                            {% for categ_column in categ_columns %}
-                            <a class="nav-link" href="charts.html">
-                                {{categ_column}}
-                            </a>
-                            {% endfor %}
-
-                        </div>
-                    </div>
-                    <div class="sb-sidenav-footer">
-                        <div class="small">Logged in as:</div>
-                        Start Bootstrap
-                    </div>
-                </nav>
-            </div>
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid">
@@ -47,9 +12,16 @@
                         </ol>
                         <div class="card mb-4">
                             <div class="card-body">
-                                Chart.js is a third party plugin that is used to generate the charts in this template. The charts below have been customized - for further customization options, please visit the official
-                                <a target="_blank" href="https://www.chartjs.org/docs/latest/">Chart.js documentation</a>
-                                .
+                                <form>
+                                  <div class="row">
+                                    <div class="col">
+                                      <input type="text" class="form-control" placeholder="X parameter">
+                                    </div>
+                                    <div class="col">
+                                      <input type="text" class="form-control" placeholder="Y parameter">
+                                    </div>
+                                  </div>
+                                </form>
                             </div>
                         </div>
                         <div class="card mb-4">

@@ -1,4 +1,5 @@
 from django.db import models
+from django.conf import settings
 
 # Create your models here.
 class Customer(models.Model):
@@ -7,3 +8,6 @@ class Customer(models.Model):
     password = models.CharField(max_length=15)
     first_name = models.CharField(max_length=15)
     last_name = models.CharField(max_length=15)
+
+
+
