@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'bootstrap4',
     'dpd_static_support',
     'dashboard.apps.DashboardConfig',
+
 ]
 
 MIDDLEWARE = [
@@ -159,3 +160,5 @@ CHANNEL_LAYERS = {
 
 MEDIA_ROOT = os.path.join(BASE_DIR,'games_of_data\static\media')
 MEDIA_URL = 'media/'
+
+X_FRAME_OPTIONS = 'SAMEORIGIN'

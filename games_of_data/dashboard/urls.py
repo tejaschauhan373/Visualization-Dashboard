@@ -12,5 +12,7 @@ urlpatterns = [
     path('table/upload/', views.table_upload, name='table_upload'),
     path('table/show/',views.show_table,name = "show_table"),
     path('charts/chartjs/',views.chartjs,name = 'chartjs'),
-
+    path('show/chart/',views.chart,name = 'chart'),
+    path('plotly/',views.plotly,name="plotly"),
+    path('show/plotly/',views.plotly_chart,name="plotly chart"),
 ]
