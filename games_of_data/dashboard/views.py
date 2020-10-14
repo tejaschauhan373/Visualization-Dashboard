@@ -1,11 +1,13 @@
 from django.shortcuts import render,HttpResponse
 from plotly.offline import plot
 import plotly.graph_objects as go
+import plotly.express as px
 import openpyxl
 import pandas as pd
 import numpy as np
 from django.conf import settings
 from .models import Customer
+from .plotly import Plotly
 from django.core.files.storage import FileSystemStorage
 # Create your views here.
 
@@ -39,12 +41,6 @@ def table_upload(request):
             else:
                 row = row.strip('\n').split(',')
                 excel_data.append(row[1:])
-    # x_data = list(df["Country"])
-    # y_data = list(df["Profit"])
-    # plot_div = plot([go.Scatter(x=x_data, y=y_data,
-    #                          mode='markers+text', name='test',
-    #                          opacity=0.8)],
-    #                 output_type='div')
     return render(request, "dashboard/tables.html", context={
                                                            "excel_data":excel_data,
                                                            "excel_heading":excel_heading})
@@ -68,6 +64,11 @@ def show_table(request):
             rows.append(row[1:])
     return render(request,'dashboard/show_table.html',context={'frow':frow,
                                                                'rows':rows})
+
+
+
+
+#graphs
 
 def chartjs(request):
     df = pd.read_csv(settings.MEDIA_ROOT + '/' + request.session.get('file'))
@@ -101,15 +102,13 @@ def plotly_chart(request):
     columns = list(df.columns)
     x = list(df[request.POST.get('x')])
     y = list(df[request.POST.get('y')])
-    x_data = x
-    y_data = y
-    plot_div = plot([go.Scatter(x=x_data, y=y_data,
-                                mode='markers+text', name='test',
-                                opacity=0.8)],
-                    output_type='div')
+    plot_div = Plotly.bubble(x,y)
+    return render(request, 'dashboard/plotly.html', context={'plot_div':plot_div,
+                                                             'columns':columns})
 
-    return render(request, 'dashboard/plotly.html', context={'plot_div':plot_div})
 
+
+#user login logout
 
 def login(request):
     return render(request,'login.html')
