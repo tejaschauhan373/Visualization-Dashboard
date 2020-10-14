@@ -2,10 +2,12 @@
 
 {% block content %}
 {% load static %}
-
-  {% autoescape off %}
-  {{ plot_div }}
-  {% endautoescape %}
+    {% for i in plot_div %}
+        {% autoescape off %}
+            {{ i }}
+        {% endautoescape %}
+            <br>
+    {%  endfor %}
 
 <br>
 
