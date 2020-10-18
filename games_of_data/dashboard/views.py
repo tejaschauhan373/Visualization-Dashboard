@@ -105,10 +105,26 @@ def plotly(request):
 def plotly_chart(request):
     df = pd.read_csv(settings.MEDIA_ROOT + '/' + request.session.get('file'))
     columns = list(df.columns)
+    plot_div = None
     x = request.POST.get('x')
     y = request.POST.get('y')
     f = request.session.get('file')
-    plot_div = Plotly.strip(x,y,f)
+    graph = request.POST.get('graph')
+    graph_list = []
+    if graph == 'Scatter':
+        plot_div = Plotly.Scatter(x,y,f)
+    if graph == 'bar':
+        plot_div = Plotly.bar(x, y, f)
+    if graph == 'box':
+        plot_div = Plotly.box(x, y, f)
+    if graph == 'violin':
+        plot_div = Plotly.violin(x, y, f)
+    if graph == 'violin_box':
+        plot_div = Plotly.violin_box(x, y, f)
+    if graph == 'violin_box_scatter':
+        plot_div = Plotly.violn_box_scatter(x, y, f)
+    if graph == 'strip':
+        plot_div = Plotly.strip(x, y, f)
     return render(request, 'dashboard/plotly.html', context={'plot_div':plot_div,
                                                              'columns':columns})
 
