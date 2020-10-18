@@ -78,3 +78,9 @@ class Plotly:
         trace = px.violin(df,x=x_data, y=y_data,color=x_data, box=True,points='all')
         plot_div = plot(trace, output_type='div', include_plotlyjs=True)
         return plot_div
+
+    def strip(x_data,y_data,f):
+        df = pd.read_csv(settings.MEDIA_ROOT + '/' + f)
+        fig = px.strip(df, x=x_data, y=y_data, color=x_data, animation_frame="Month Name")
+        plot_div = plot(fig, output_type='div', include_plotlyjs=True)
+        return plot_div

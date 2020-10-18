@@ -108,7 +108,7 @@ def plotly_chart(request):
     x = request.POST.get('x')
     y = request.POST.get('y')
     f = request.session.get('file')
-    plot_div = Plotly.violinwithbox(x,y,f)
+    plot_div = Plotly.strip(x,y,f)
     return render(request, 'dashboard/plotly.html', context={'plot_div':plot_div,
                                                              'columns':columns})
 
