@@ -2,22 +2,15 @@
 {%load static%
 {%block content%}
 
-<div id="layoutSidenav_content" xmlns="http://www.w3.org/1999/html">
+<div id="layoutSidenav_content" style="margin-right:20px;">
                 <main>
                     <div class="container-fluid">
-                        <h1 class="mt-4">Plotly</h1>
+                         <h1 class="mt-4">Plotly</h1>
                         <ol class="breadcrumb mb-4">
                             <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
                             <li class="breadcrumb-item active">Plotly</li>
                         </ol>
-                        <div class="card mb-4">
-                            <div class="card-body">
-                                {%for column in columns%}
-                                    {{column}}
-                                {%endfor%}
 
-                            </div>
-                        </div>
 
                         <div class="card mb-4">
                             <div class="card-body">
@@ -55,11 +48,11 @@
                                 </form>
                             </div>
                         </div>
-
+                        <div style="margin-right:50px;">
                                 {% autoescape off %}
                                 {{ plot_div |safe}}
                                 {% endautoescape %}
-
+                        </div>
                     </div>
                 </main>
                 <footer class="py-4 bg-light mt-auto">

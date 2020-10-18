@@ -46,43 +46,43 @@ class Plotly:
 
     def Scatter(x_data, y_data , f):
         df = pd.read_csv(settings.MEDIA_ROOT + '/' + f)
-        trace = px.scatter(df, x=x_data, y=y_data, color='Country', height=500)
+        trace = px.scatter(df, x=x_data, y=y_data, color='Country', height=500,width=1400)
         plot_div = plot(trace, output_type='div', include_plotlyjs=True)
         return plot_div
 
     def bar(x_data, y_data , f):
         df = pd.read_csv(settings.MEDIA_ROOT + '/' + f)
-        trace = px.histogram(df, x=x_data, color=x_data, height=500)
+        trace = px.histogram(df, x=x_data, color=x_data, height=500,width=1400)
         plot_div = plot(trace, output_type='div', include_plotlyjs=True)
         return plot_div
 
     def box(x_data,y_data,f):
         df = pd.read_csv(settings.MEDIA_ROOT + '/' + f)
-        trace = px.box(df,x=x_data, y=y_data,color=x_data, height=500)
+        trace = px.box(df,x=x_data, y=y_data,color=x_data, height=500,width=1400)
         plot_div = plot(trace, output_type='div', include_plotlyjs=True)
         return plot_div
 
     def violin(x_data,y_data,f):
         df = pd.read_csv(settings.MEDIA_ROOT + '/' + f)
-        trace = px.violin(df,x=x_data, y=y_data,color=x_data, height=500)
+        trace = px.violin(df,x=x_data, y=y_data,color=x_data, height=500,width=1400)
         plot_div = plot(trace, output_type='div', include_plotlyjs=True)
         return plot_div
 
     def violin_box(x_data,y_data,f):
         df = pd.read_csv(settings.MEDIA_ROOT + '/' + f)
-        trace = px.violin(df,x=x_data, y=y_data,color=x_data,height=500,  box=True)
+        trace = px.violin(df,x=x_data, y=y_data,color=x_data,height=500, width=1400, box=True)
         plot_div = plot(trace, output_type='div', include_plotlyjs=True)
         return plot_div
 
     def violn_box_scatter (x_data,y_data,f):
         df = pd.read_csv(settings.MEDIA_ROOT + '/' + f)
-        trace = px.violin(df,x=x_data, y=y_data,color=x_data, height=500,box=True,points='all',animation_frame="Month Name")
+        trace = px.violin(df,x=x_data, y=y_data,color=x_data, height=500, width=1400, box=True,points='all',animation_frame="Month Name")
         plot_div = plot(trace, output_type='div', include_plotlyjs=True)
         return plot_div
 
     def strip(x_data,y_data,f):
         df = pd.read_csv(settings.MEDIA_ROOT + '/' + f)
-        fig = px.strip(df, x=x_data, y=y_data, color=x_data, animation_frame="Month Name", height=500)
+        fig = px.strip(df, x=x_data, y=y_data, color=x_data, animation_frame="Month Name",width=1400, height=500)
         plot_div = plot(fig, output_type='div', include_plotlyjs=True)
         return plot_div
 
