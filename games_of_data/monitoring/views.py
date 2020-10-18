@@ -1,10 +1,12 @@
 from django.shortcuts import render
 from plotly.offline import plot
-import plotly.graph_objs as go
 from pandas_datareader import data, wb
+from collections import defaultdict
+import plotly.graph_objs as go
 import pandas as pd
 import numpy as np
 import datetime
+
 # Create your views here.
 
 
@@ -20,7 +22,8 @@ def finance(request):
     x_data = list(BAC['Open'])
     y_data = list(BAC['Close'])
     plot_div = plot([go.Scatter(x=x_data, y=y_data,
-                             mode='lines', name='test',
-                             opacity=0.8)],
+                                mode='lines', name='test',
+                                opacity=0.8)],
                     output_type='div')
     return render(request, "monitoring/finance.html", context={'plot_div': plot_div})
+
