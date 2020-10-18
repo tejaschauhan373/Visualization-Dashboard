@@ -11,7 +11,12 @@ from .plotly import Plotly
 from django.core.files.storage import FileSystemStorage
 # Create your views here.
 
-dataframe = pd.DataFrame()
+
+
+def home(request):
+    return render(request, 'basic.html')
+
+
 def table_upload(request):
     if "GET" == request.method:
         return render(request, 'dashboard/tables.html', {})
@@ -100,9 +105,10 @@ def plotly(request):
 def plotly_chart(request):
     df = pd.read_csv(settings.MEDIA_ROOT + '/' + request.session.get('file'))
     columns = list(df.columns)
-    x = list(df[request.POST.get('x')])
-    y = list(df[request.POST.get('y')])
-    plot_div = Plotly.bubble(x,y)
+    x = request.POST.get('x')
+    y = request.POST.get('y')
+    f = request.session.get('file')
+    plot_div = Plotly.violinwithbox(x,y,f)
     return render(request, 'dashboard/plotly.html', context={'plot_div':plot_div,
                                                              'columns':columns})
 

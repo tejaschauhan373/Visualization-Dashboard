@@ -3,6 +3,7 @@ from . import views
 from .dash_apps.finished_apps import SimpleExample
 
 urlpatterns = [
+    path('home/', views.home, name = 'home'),
     path('login/',views.login,name = 'login'),
     path('signup/',views.signup, name = 'signup'),
     path('register/',views.register,name='register'),
