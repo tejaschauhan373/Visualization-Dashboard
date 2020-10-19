@@ -4,4 +4,4 @@ from .models import Customer
 
 @admin.register(Customer)
 class DashboardAdmin(admin.ModelAdmin):
-    list_display =("user_id","username","password","first_name","last_name")
+    list_display =("user_id","username","password","first_name","last_name","email")

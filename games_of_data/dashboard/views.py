@@ -8,6 +8,9 @@ import numpy as np
 from django.conf import settings
 from .models import Customer
 from .plotly import Plotly
+import smtplib ,ssl
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
 from django.core.files.storage import FileSystemStorage
 # Create your views here.
 
@@ -143,10 +146,11 @@ def register(request):
     lname = request.POST.get('lastname')
     uname = request.POST.get('username')
     pwd = request.POST.get('password')
+    email = request.POST.get('email')
     cpassword = request.POST.get('cpassword')
     usr = Customer.objects.filter(username=uname)
     if len(usr) == 0 and  pwd == cpassword:
-        newuser = Customer.objects.create(username=uname, password=pwd, first_name=fname, last_name=lname)
+        newuser = Customer.objects.create(username=uname, password=pwd, first_name=fname, last_name=lname, email=email)
         newuser.save()
         nuser = Customer.objects.get(username=uname)
         print(nuser.user_id)
@@ -170,6 +174,64 @@ def auth_user(request):
     else:
         return HttpResponse('invalid username or password')
 
+def reset(request):
+    return render(request,'password.html')
+
+def resetpasswrodform(request):
+    return render(request,'resetpassword.html')
+
+def resetpassword(request):
+    email = request.POST.get('email')
+    usr = Customer.objects.filter(email=email)
+    if(len(usr) != 0):
+        sender_email = "akashdesai326@gmail.com"
+        receiver_email = usr[0].email
+        password = '@2020*qaZ'
+        msg = MIMEMultipart('alternative')
+        msg['Subject'] = "Visualize"
+        msg['From'] = sender_email
+        msg['To'] = receiver_email
+
+        # Create the body of the message (a plain-text and an HTML version).
+        text = "Hi!\nHow are you?\nHere is the link you wanted:\nhttp://www.python.org"
+        html = """\
+        <html>
+          <head></head>
+          <body>
+            <p>Hi!<br>
+               Reset your password from below link<br>
+               <hr>
+               <a href="http://127.0.0.1:8000/dashboard/reset/resetpassword/">Reset your Password</a> you wanted.
+            </p>
+          </body>
+        </html>
+        """
+        part1 = MIMEText(text, 'plain')
+        part2 = MIMEText(html, 'html')
+        msg.attach(part1)
+        msg.attach(part2)
+        context = ssl.create_default_context()
+        with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as server:
+            server.login(sender_email, password)
+            server.sendmail(
+                sender_email, receiver_email, msg.as_string()
+            )
+
+        return render(request,'login.html')
+    return render(request,'password.html',{'message':"email id does not exists."})
+
+
+def password(request):
+    email = request.POST.get('email')
+    pwd = request.POST.get('password')
+    cpwd = request.POST.get('cpassword')
+    usr = Customer.objects.filter(email=email)
+    if(len(usr) != 0 ):
+        if(pwd == cpwd):
+            Customer.objects.filter(email=email).update(password= pwd)
+            return render(request,'login.html')
+        return render(request,'resetpassword.html',{"message":"your password does not match with confirmed password."})
+    return render(request,'resetpassword.html',{"message":"Email id does not exists."})
 
 def logout(request):
     try:
