@@ -16,8 +16,9 @@ urlpatterns = [
     path('show/chart/',views.chart,name = 'chart'),
     path('plotly/',views.plotly,name="plotly"),
     path('show/plotly/',views.plotly_chart,name="plotly chart"),
-    path('reset/',views.reset,name='reset'),
-    path('reset/email/',views.resetpassword,name="resetpassword"),
-    path('reset/resetpassword/',views.resetpasswrodform ,name="resetform"),
+
+    path('email/',views.reset,name='reset'),
+    path('email/post/',views.resetpassword,name="emailpost"),
+    path('reset/password/form/',views.resetpasswrodform ,name="resetform"),
     path('reset/password/',views.password,name="password")
 ]

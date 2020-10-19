@@ -13,6 +13,11 @@
                                     <div class="card-body">
                                         <form action="/dashboard/auth_user/" method="post">
                                             {% csrf_token %}
+                                            {% if message is not None%}
+                                                <div class="alert alert-warning" role="alert">
+                                                    {{message}}
+                                                </div>
+                                            {%endif%}
                                             <div class="form-group">
                                                 <label class="small mb-1" for="inputEmailAddress">Username</label>
                                                 <input class="form-control py-4" id="inputEmailAddress" type="text" name = "username" placeholder="Enter username" required/>
@@ -22,7 +27,7 @@
                                                 <input class="form-control py-4" id="inputPassword" type="password" name="password" placeholder="Enter password" required/>
                                             </div>
                                             <div class="form-group d-flex align-items-center justify-content-between mt-4 mb-0">
-                                                <a class="small" href="/dashboard/reset/">Forgot Password?</a>
+                                                <a class="small" href="/dashboard/email/">Forgot Password?</a>
                                                <button class="btn btn-primary" type="submit">Login</button>
                                             </div>
                                         </form>

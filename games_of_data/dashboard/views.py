@@ -15,11 +15,11 @@ from django.core.files.storage import FileSystemStorage
 # Create your views here.
 
 
-
+#home page
 def home(request):
     return render(request, 'basic.html')
 
-
+#upload table
 def table_upload(request):
     if "GET" == request.method:
         return render(request, 'dashboard/tables.html', {})
@@ -53,6 +53,7 @@ def table_upload(request):
                                                            "excel_data":excel_data,
                                                            "excel_heading":excel_heading})
 
+#show table
 def table(request):
     return render(request , 'dashboard/tables.html')
 
@@ -100,10 +101,14 @@ def chart(request):
                                                              'x':x[1:11],
                                                              'y':y[1:11]})
 
+
+#plotly page
 def plotly(request):
     df = pd.read_csv(settings.MEDIA_ROOT + '/' + request.session.get('file'))
     columns = list(df.columns)
     return render(request,'dashboard/plotly.html',context = {'columns':columns[1:]})
+
+#plotly graph
 
 def plotly_chart(request):
     df = pd.read_csv(settings.MEDIA_ROOT + '/' + request.session.get('file'))
@@ -159,7 +164,7 @@ def register(request):
         print("here")
         return render(request, 'register.html', {'error': 'This username already exists'})
 
-
+#authenticate user
 
 def auth_user(request):
     user = Customer.objects.filter(username=request.POST.get('username')).first()
@@ -170,16 +175,18 @@ def auth_user(request):
             request.session['lname'] = user.last_name
             return render(request,'basic.html',{})
         else:
-            return HttpResponse('invalid password')
+            return render(request,'login.html',{'message':"invalid password"})
     else:
-        return HttpResponse('invalid username or password')
+        return render(request,'login.html',{'message':"invalid username or password"})
 
+#forgot password page
 def reset(request):
-    return render(request,'password.html')
+    return render(request,'email.html')
 
 def resetpasswrodform(request):
-    return render(request,'resetpassword.html')
+    return render(request,'resetpassword.html',{})
 
+#forgot page email post request
 def resetpassword(request):
     email = request.POST.get('email')
     usr = Customer.objects.filter(email=email)
@@ -201,7 +208,7 @@ def resetpassword(request):
             <p>Hi!<br>
                Reset your password from below link<br>
                <hr>
-               <a href="http://127.0.0.1:8000/dashboard/reset/resetpassword/">Reset your Password</a> you wanted.
+               <a href="http://127.0.0.1:8000/dashboard/reset/password/form/">Reset your Password</a> you wanted.
             </p>
           </body>
         </html>
@@ -221,6 +228,8 @@ def resetpassword(request):
     return render(request,'password.html',{'message':"email id does not exists."})
 
 
+
+#reset password page post request
 def password(request):
     email = request.POST.get('email')
     pwd = request.POST.get('password')
@@ -230,9 +239,11 @@ def password(request):
         if(pwd == cpwd):
             Customer.objects.filter(email=email).update(password= pwd)
             return render(request,'login.html')
-        return render(request,'resetpassword.html',{"message":"your password does not match with confirmed password."})
-    return render(request,'resetpassword.html',{"message":"Email id does not exists."})
+        return render(request,'resetpassword.html',{"error":"your password does not match with confirm password."})
+    return render(request,'resetpassword.html',{"error":"Email id does not exists."})
 
+
+#logout
 def logout(request):
     try:
         del request.session['user']
