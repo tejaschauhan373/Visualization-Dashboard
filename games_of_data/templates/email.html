@@ -16,7 +16,7 @@
                                                     {{message}}
                                             </div>
                                         {%endif%}
-                                        <form action="/dashboard/reset/email/" method="post">
+                                        <form action="/dashboard/email/post/" method="post">
                                             {% csrf_token %}
                                             <div class="form-group">
                                                 <label class="small mb-1" for="inputEmailAddress">Email</label>
