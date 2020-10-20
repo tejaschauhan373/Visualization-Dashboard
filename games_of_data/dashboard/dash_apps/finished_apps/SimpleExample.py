@@ -58,7 +58,7 @@
 #     )
 # ])
 #
-#
+
 # @app.callback(
 #     Output('graph-with-slider', 'figure'),
 #     [Input('year-slider', 'value')])
