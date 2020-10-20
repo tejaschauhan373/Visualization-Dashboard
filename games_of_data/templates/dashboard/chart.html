@@ -10,27 +10,41 @@
                             <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
                             <li class="breadcrumb-item active">Charts</li>
                         </ol>
-                        <div class="card mb-4">
-                            <div class="card-body">
-                                {%for column in columns%}
-                                    {{column}}
-                                {%endfor%}
-                            </div>
-                        </div>
+
 
                         <div class="card mb-4">
                             <div class="card-body">
                                 <form action = "/dashboard/show/chart/" method="post" id="chartform">
-                                    {% csrf_token %}
-                                  <div class="row">
-                                    <div class="col">
-                                      <input type="text" class="form-control" name="x" placeholder="X parameter">
-                                    </div>
-                                    <div class="col">
-                                      <input type="text" class="form-control" name="y" placeholder="Y parameter">
-                                    </div>
+                                   {% csrf_token %}
+                                    <div class="row">
+
+                                         <div class="col">
+                                             <input type="text" class="form-control" name="x" placeholder="X parameter">
+                                             <br>
+                                             <input type="text" class="form-control" name="y" placeholder="Y parameter">
+                                        </div>
+                                        <div class="col" >
+                                            <div class="input-group sm-3">
+                                              <div class="input-group-prepend">
+                                                <label class="input-group-text" for="inputGroupSelect01">Graphs</label>
+                                              </div>
+                                              <select class="custom-select" id="inputGroupSelect01" name = "graph">
+                                                  <option selected>Choose...</option>
+                                                  <option value="Scatter">Scatter</option>
+                                                  <option value="bar">bar</option>
+                                                  <option value="box">box</option>
+                                                  <option value="violin">violin</option>
+                                                  <option value="violin_box">violin_box</option>
+                                                  <option value="violin_box_scatter">violin_box_scatter</option>
+                                                  <option value="strip">strip</option>
+                                              </select>
+                                            </div>
+                                            <div class="btn-group dropright" style="margin-top:22px;">
+                                                <input type="submit" class="btn btn-info" value="Submit">
+                                            </div>
+                                        </div>
                                   </div>
-                                    <input type="submit">
+
                                 </form>
                             </div>
                         </div>

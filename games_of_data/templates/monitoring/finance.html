@@ -1,13 +1,34 @@
 {% extends 'basic.html' %}
+{%load static%
+{%block content%}
 
-{% block content %}
+<div id="layoutSidenav_content" style="margin-right:20px;">
+                <main>
+                    <div class="container-fluid">
+                         <h1 class="mt-4">E-commerce</h1>
+                        <ol class="breadcrumb mb-4">
+                            <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+                            <li class="breadcrumb-item active">Plotly</li>
+                        </ol>
 
-{% load static %}
-
-  {% autoescape off %}
-  {{ plot_div }}
-  {% endautoescape %}
-
-<br>
-
+                        <div style="margin-right:50px;">
+                                {% autoescape off %}
+                                {{ plot_div |safe}}
+                                {% endautoescape %}
+                        </div>
+                    </div>
+                </main>
+                <footer class="py-4 bg-light mt-auto">
+                    <div class="container-fluid">
+                        <div class="d-flex align-items-center justify-content-between small">
+                            <div class="text-muted">Copyright &copy; Your Website 2020</div>
+                            <div>
+                                <a href="#">Privacy Policy</a>
+                                &middot;
+                                <a href="#">Terms &amp; Conditions</a>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+            </div>
 {%endblock%}
