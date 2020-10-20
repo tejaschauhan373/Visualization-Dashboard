@@ -13,9 +13,12 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 import os
 import pymongo
 from pathlib import Path
+import urllib.parse
 
+mongouri = "mongodb+srv://AkshatMehta:" + urllib.parse.quote(
+    "AkshatMehtaProjectOne") + "@cluster0.9on8n.mongodb.net/cluster0?retryWrites=true&w=majority"
 mongodb_connection_string = 'mongodb://localhost:27017/'
-client = pymongo.MongoClient(mongodb_connection_string)
+client = pymongo.MongoClient(mongouri)
 database = client['flipkart']
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
