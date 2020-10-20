@@ -5,7 +5,6 @@ from collections import defaultdict
 from plotly.offline import plot
 import plotly.graph_objs as go
 
-
 # Create your views here.
 from .plotly import grouped_bar
 
@@ -16,7 +15,7 @@ def home(request):
 
 def avg_price_by_ram(request):
     agr = [{'$group': {'_id': {"company": '$company', "ram": "$ram"}, "sum": {"$sum": "$price"}, "count": {"$sum": 1}}}]
-    list_of_items = execute_aggregation("mobile", agr).limit(10)
+    list_of_items = execute_aggregation("mobile", agr)
     res = defaultdict(list)
     list_of_items = filter_by_ram(list_of_items)
     for val in list_of_items:

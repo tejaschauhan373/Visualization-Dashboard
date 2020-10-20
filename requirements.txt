@@ -58,3 +58,4 @@ txaio==20.4.1
 Werkzeug==1.0.1
 whitenoise==5.2.0
 zope.interface==5.1.2
+dnspython==1.16.0

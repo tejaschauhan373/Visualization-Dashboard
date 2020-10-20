@@ -1,13 +1,12 @@
 {% extends 'basic.html' %}
 
 {% block content %}
+
 {% load static %}
-    {% for i in plot_div %}
-        {% autoescape off %}
-            {{ i }}
-        {% endautoescape %}
-            <br>
-    {%  endfor %}
+
+  {% autoescape off %}
+  {{ plot_div }}
+  {% endautoescape %}
 
 <br>
 
