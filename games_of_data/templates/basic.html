@@ -17,7 +17,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js"
             crossorigin="anonymous"></script>
 </head>
-<body class="sb-nav-fixed">
+<body class="sb-nav-fixed" style="background:#eee;">
 {% load static %}
 <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
     <a class="navbar-brand" href="/dashboard/home/">Visualize</a>
@@ -51,9 +51,9 @@
 </nav>
 
 <!--left sidebar -->
-<div id="layoutSidenav">
+<div id="layoutSidenav" >
     <div id="layoutSidenav_nav">
-        <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+        <nav class="sb-sidenav accordion sb-sidenav-light" id="sidenavAccordion" style="background:white;">
             <div class="sb-sidenav-menu">
                 <div class="nav">
                     <div class="sb-sidenav-menu-heading">Core</div>
@@ -96,6 +96,10 @@
                         Plotly
                     </a>
                     {%endif%}
+                    <a class="nav-link" href="/dashboard/covid/">
+                        <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
+                        Covid-19
+                    </a>
 
 
                 </div>
@@ -111,22 +115,22 @@
 
     {%endblock%}
 
-    {%if columns%}
-    <div style="width:220px; margin-top:56px; "class="sb-sidenav-dark">
-    <div class="sidebar-right sidebar sidebar-sticky">
-         <h3 style="margin-left:10px; margin-top:25px;" class="mt">Columns</h3><br>
-        <div class="table-responsive">
-            <table>
-                 {%for col in columns%}
-                 <tr>
-                     <td class="nav-link">{{col}}</td>
-                 </tr>
-                 {%endfor%}
-            </table>
-        </div>
-    </div>
-    </div>
-    {%endif%}
+<!--    {%if columns%}-->
+<!--    <div style="width:220px; margin-top:56px; "class="sb-sidenav-light">-->
+<!--    <div class="sidebar-right sidebar sidebar-sticky">-->
+<!--         <h3 style="margin-left:10px; margin-top:25px;" class="mt">Columns</h3><br>-->
+<!--        <div class="table-responsive">-->
+<!--            <table>-->
+<!--                 {%for col in columns%}-->
+<!--                 <tr>-->
+<!--                     <td class="nav-link">{{col}}</td>-->
+<!--                 </tr>-->
+<!--                 {%endfor%}-->
+<!--            </table>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--    </div>-->
+<!--    {%endif%}-->
 
     <!--end bar-->
 </div>

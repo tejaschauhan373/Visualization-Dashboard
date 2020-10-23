@@ -5,19 +5,18 @@
 <div id="layoutSidenav_content" style="margin-right:20px;">
                 <main>
                     <div class="container-fluid">
-                         <h1 class="mt-4">E-commerce</h1>
-                        <ol class="breadcrumb mb-4">
+                        <hr>
+                        <ol class="breadcrumb mb-4" style="background:white;">
                             <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
                             <li class="breadcrumb-item active">Plotly</li>
                         </ol>
 
-                        <div style="margin-right:50px;">
-                                {% autoescape off %}
-                                {{ plot_div |safe}}
-                                {% endautoescape %}
-                            {% load plotly_dash %}
-                        {% plotly_app name="SimpleExample" ratio=0.8 %}
 
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                   {% load plotly_dash %}
+                                    {% plotly_app name="Datatable" ratio=0.8 %}
+                            </div>
                         </div>
                     </div>
                 </main>

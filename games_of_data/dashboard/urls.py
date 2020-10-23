@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-from .dash_apps.finished_apps import SimpleExample
+from .dash_apps.finished_apps import covid
 
 urlpatterns = [
     path('home/', views.home, name = 'home'),
@@ -20,5 +20,7 @@ urlpatterns = [
     path('email/',views.reset,name='reset'),
     path('email/post/',views.resetpassword,name="emailpost"),
     path('reset/password/form/',views.resetpasswrodform ,name="resetform"),
-    path('reset/password/',views.password,name="password")
+    path('reset/password/',views.password,name="password"),
+
+    path('covid/',views.covid,name='custome')
 ]
