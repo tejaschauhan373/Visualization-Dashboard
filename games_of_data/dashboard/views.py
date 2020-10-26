@@ -122,6 +122,7 @@ def plotly_chart(request):
                    fill_color='lavender',
                    align='left'))
     ])
+    tab.update_layout(template="plotly_white")
     plot_div = None
     x = request.POST.get('x')
     y = request.POST.get('y')

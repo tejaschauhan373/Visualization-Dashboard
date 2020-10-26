@@ -56,8 +56,8 @@ class Plotly:
 
     def Scatter(x_data, y_data, f):
         df = pd.read_csv(settings.MEDIA_ROOT + '/' + f)
-        fig = px.scatter(df, x=x_data, y=y_data, color='Country', height=500)
-        fig.update_layout({'plot_bgcolor': 'rgba(0, 0, 0, 0)'})
+        fig = px.scatter(df, x=x_data, y=y_data, color='Country',)
+        fig.update_layout( template="plotly_white")
         xbutton = []
         ybutton = []
         for col in df.columns:
@@ -84,11 +84,47 @@ class Plotly:
             # Add dropdown
             updatemenus=[
                 dict(
-                    buttons=list(xbutton),
+                    buttons=list([
+                        dict(
+                            args=["type", "line"],
+                            label="Line",
+                            method="restyle"
+                        ),
+                        dict(
+                            args=["type", "bar"],
+                            label="Bar",
+                            method="restyle"
+                        ),
+                        dict(
+                            args=["type", "pie"],
+                            label="Pie",
+                            method="restyle"
+                        ),
+                        dict(
+                            args=["type", "violin"],
+                            label="Violin",
+                            method="restyle"
+                        ),
+                        dict(
+                            args=["type", "box"],
+                            label="Box",
+                            method="restyle"
+                        )
+                    ]),
                     direction="down",
                     pad={"r": 10, "t": 10},
                     showactive=True,
                     x=0.1,
+                    xanchor="left",
+                    y=1.2,
+                    yanchor="top"
+                ),
+                dict(
+                    buttons=list(xbutton),
+                    direction="down",
+                    pad={"r": 10, "t": 10},
+                    showactive=True,
+                    x=0.250,
                     xanchor="left",
                     y=1.2,
                     yanchor="top"
@@ -99,21 +135,22 @@ class Plotly:
                     direction="down",
                     pad={"r": 10, "t": 10},
                     showactive=True,
-                    x=0.37,
+                    x=0.4,
                     xanchor="left",
                     y=1.2,
                     yanchor="top"
                 ),
             ],
-            autosize=True
+            autosize=True,
+            template="plotly_white"
         )
         plot_div = plot(fig, output_type='div', include_plotlyjs=True)
         return plot_div
 
     def bar(x_data, y_data, f):
         df = pd.read_csv(settings.MEDIA_ROOT + '/' + f)
-        fig = px.histogram(df, x=x_data, color=x_data, height=500)
-        fig.update_layout({'plot_bgcolor':'rgba(0, 0, 0, 0)'})
+        fig = px.histogram(df, x=x_data, color=x_data,)
+        fig.update_layout( template="plotly_white")
         xbutton = []
         ybutton = []
         for col in df.columns:
@@ -140,11 +177,47 @@ class Plotly:
             # Add dropdown
             updatemenus=[
                 dict(
-                    buttons=list(xbutton),
+                    buttons=list([
+                        dict(
+                            args=["type", "line"],
+                            label="Line",
+                            method="restyle"
+                        ),
+                        dict(
+                            args=["type", "bar"],
+                            label="Bar",
+                            method="restyle"
+                        ),
+                        dict(
+                            args=["type", "pie"],
+                            label="Pie",
+                            method="restyle"
+                        ),
+                        dict(
+                            args=["type", "violin"],
+                            label="Violin",
+                            method="restyle"
+                        ),
+                        dict(
+                            args=["type", "box"],
+                            label="Box",
+                            method="restyle"
+                        )
+                    ]),
                     direction="down",
                     pad={"r": 10, "t": 10},
                     showactive=True,
                     x=0.1,
+                    xanchor="left",
+                    y=1.2,
+                    yanchor="top"
+                ),
+                dict(
+                    buttons=list(xbutton),
+                    direction="down",
+                    pad={"r": 10, "t": 10},
+                    showactive=True,
+                    x=0.250,
                     xanchor="left",
                     y=1.2,
                     yanchor="top"
@@ -155,21 +228,22 @@ class Plotly:
                     direction="down",
                     pad={"r": 10, "t": 10},
                     showactive=True,
-                    x=0.37,
+                    x=0.4,
                     xanchor="left",
                     y=1.2,
                     yanchor="top"
                 ),
             ],
-            autosize=True
+            autosize=True,
+            template="plotly_white"
         )
         plot_div = plot(fig, output_type='div', include_plotlyjs=True)
         return plot_div
 
     def box(x_data, y_data, f):
         df = pd.read_csv(settings.MEDIA_ROOT + '/' + f)
-        fig = px.box(df, x=x_data, y=y_data, color=x_data, height=500)
-        fig.update_layout({'plot_bgcolor': 'rgba(0, 0, 0, 0)'})
+        fig = px.box(df, x=x_data, y=y_data, color=x_data,)
+        fig.update_layout(template="plotly_white")
         xbutton = []
         ybutton = []
         for col in df.columns:
@@ -196,7 +270,33 @@ class Plotly:
             # Add dropdown
             updatemenus=[
                 dict(
-                    buttons=list(xbutton),
+                    buttons=list([
+                        dict(
+                            args=["type", "line"],
+                            label="Line",
+                            method="restyle"
+                        ),
+                        dict(
+                            args=["type", "bar"],
+                            label="Bar",
+                            method="restyle"
+                        ),
+                        dict(
+                            args=["type", "pie"],
+                            label="Pie",
+                            method="restyle"
+                        ),
+                        dict(
+                            args=["type", "violin"],
+                            label="Violin",
+                            method="restyle"
+                        ),
+                        dict(
+                            args=["type", "box"],
+                            label="Box",
+                            method="restyle"
+                        )
+                    ]),
                     direction="down",
                     pad={"r": 10, "t": 10},
                     showactive=True,
@@ -204,20 +304,31 @@ class Plotly:
                     xanchor="left",
                     y=1.2,
                     yanchor="top"
-
+                ),
+                dict(
+                    buttons=list(xbutton),
+                    direction="down",
+                    pad={"r": 10, "t": 10},
+                    showactive=True,
+                    x=0.250,
+                    xanchor="left",
+                    y=1.2,
+                    yanchor="top"
                 ),
                 dict(
                     buttons=list(ybutton),
                     direction="down",
                     pad={"r": 10, "t": 10},
                     showactive=True,
-                    x=0.37,
+                    x=0.4,
                     xanchor="left",
                     y=1.2,
                     yanchor="top"
                 ),
+
             ],
-            autosize=True
+            autosize=True,
+            template="plotly_white"
         )
         plot_div = plot(fig, output_type='div', include_plotlyjs=True)
         return plot_div
@@ -225,7 +336,7 @@ class Plotly:
     def violin(x_data, y_data, f):
         df = pd.read_csv(settings.MEDIA_ROOT + '/' + f)
         fig = px.violin(df, x=x_data, y=y_data, color=x_data, height=500)
-        fig.update_layout({'plot_bgcolor': 'rgba(0, 0, 0, 0)'})
+        fig.update_layout(template="plotly_white")
         xbutton = []
         ybutton = []
         for col in df.columns:
@@ -252,11 +363,47 @@ class Plotly:
             # Add dropdown
             updatemenus=[
                 dict(
-                    buttons=list(xbutton),
+                    buttons=list([
+                        dict(
+                            args=["type", "line"],
+                            label="Line",
+                            method="restyle"
+                        ),
+                        dict(
+                            args=["type", "bar"],
+                            label="Bar",
+                            method="restyle"
+                        ),
+                        dict(
+                            args=["type", "pie"],
+                            label="Pie",
+                            method="restyle"
+                        ),
+                        dict(
+                            args=["type", "violin"],
+                            label="Violin",
+                            method="restyle"
+                        ),
+                        dict(
+                            args=["type", "box"],
+                            label="Box",
+                            method="restyle"
+                        )
+                    ]),
                     direction="down",
                     pad={"r": 10, "t": 10},
                     showactive=True,
                     x=0.1,
+                    xanchor="left",
+                    y=1.2,
+                    yanchor="top"
+                ),
+                dict(
+                    buttons=list(xbutton),
+                    direction="down",
+                    pad={"r": 10, "t": 10},
+                    showactive=True,
+                    x=0.250,
                     xanchor="left",
                     y=1.2,
                     yanchor="top"
@@ -267,13 +414,14 @@ class Plotly:
                     direction="down",
                     pad={"r": 10, "t": 10},
                     showactive=True,
-                    x=0.37,
+                    x=0.4,
                     xanchor="left",
                     y=1.2,
                     yanchor="top"
                 ),
             ],
-            autosize=True
+            autosize=True,
+            template="plotly_white"
         )
         plot_div = plot(fig, output_type='div', include_plotlyjs=True)
         return plot_div
@@ -281,7 +429,7 @@ class Plotly:
     def violin_box(x_data, y_data, f):
         df = pd.read_csv(settings.MEDIA_ROOT + '/' + f)
         fig = px.violin(df, x=x_data, y=y_data, color=x_data, height=500, box=True)
-        fig.update_layout({'plot_bgcolor': 'rgba(0, 0, 0, 0)'})
+        fig.update_layout(template="plotly_white")
         xbutton = []
         ybutton = []
         for col in df.columns:
@@ -308,11 +456,47 @@ class Plotly:
             # Add dropdown
             updatemenus=[
                 dict(
-                    buttons=list(xbutton),
+                    buttons=list([
+                        dict(
+                            args=["type", "line"],
+                            label="Line",
+                            method="restyle"
+                        ),
+                        dict(
+                            args=["type", "bar"],
+                            label="Bar",
+                            method="restyle"
+                        ),
+                        dict(
+                            args=["type", "pie"],
+                            label="Pie",
+                            method="restyle"
+                        ),
+                        dict(
+                            args=["type", "violin"],
+                            label="Violin",
+                            method="restyle"
+                        ),
+                        dict(
+                            args=["type", "box"],
+                            label="Box",
+                            method="restyle"
+                        )
+                    ]),
                     direction="down",
                     pad={"r": 10, "t": 10},
                     showactive=True,
                     x=0.1,
+                    xanchor="left",
+                    y=1.2,
+                    yanchor="top"
+                ),
+                dict(
+                    buttons=list(xbutton),
+                    direction="down",
+                    pad={"r": 10, "t": 10},
+                    showactive=True,
+                    x=0.250,
                     xanchor="left",
                     y=1.2,
                     yanchor="top"
@@ -323,13 +507,14 @@ class Plotly:
                     direction="down",
                     pad={"r": 10, "t": 10},
                     showactive=True,
-                    x=0.37,
+                    x=0.4,
                     xanchor="left",
                     y=1.2,
-                    yanchor="left"
+                    yanchor="top"
                 ),
             ],
-            autosize=True
+            autosize=True,
+            template="plotly_white"
         )
         plot_div = plot(fig, output_type='div', include_plotlyjs=True)
         return plot_div
@@ -364,6 +549,42 @@ class Plotly:
             # Add dropdown
             updatemenus=[
                 dict(
+                    buttons=list([
+                        dict(
+                            args=["type", "line"],
+                            label="Line",
+                            method="restyle"
+                        ),
+                        dict(
+                            args=["type", "bar"],
+                            label="Bar",
+                            method="restyle"
+                        ),
+                        dict(
+                            args=["type", "pie"],
+                            label="Pie",
+                            method="restyle"
+                        ),
+                        dict(
+                            args=["type", "violin"],
+                            label="Violin",
+                            method="restyle"
+                        ),
+                        dict(
+                            args=["type", "box"],
+                            label="Box",
+                            method="restyle"
+                        )
+                    ]),
+                    direction="down",
+                    pad={"r": 10, "t": 10},
+                    showactive=True,
+                    x=0.1,
+                    xanchor="left",
+                    y=1.2,
+                    yanchor="top"
+                ),
+                dict(
                     buttons=list(xbutton),
                     direction="down",
                     pad={"r": 10, "t": 10},
@@ -379,7 +600,7 @@ class Plotly:
                     direction="down",
                     pad={"r": 10, "t": 10},
                     showactive=True,
-                    x=0.1,
+                    x=0.250,
                     xanchor="left",
                     y=1.2,
                     yanchor="top"
@@ -390,13 +611,14 @@ class Plotly:
                     direction="down",
                     pad={"r": 10, "t": 10},
                     showactive=True,
-                    x=0.37,
+                    x=0.4,
                     xanchor="left",
                     y=1.2,
                     yanchor="top"
                 ),
             ],
-            autosize=True
+            autosize=True,
+            template="plotly_white"
         )
         plot_div = plot(fig, output_type='div', include_plotlyjs=True)
         return plot_div
@@ -431,11 +653,47 @@ class Plotly:
             # Add dropdown
             updatemenus=[
                 dict(
+                    buttons=list([
+                        dict(
+                            args=["type", "line"],
+                            label="Line",
+                            method="restyle"
+                        ),
+                        dict(
+                            args=["type", "bar"],
+                            label="Bar",
+                            method="restyle"
+                        ),
+                        dict(
+                            args=["type", "pie"],
+                            label="Pie",
+                            method="restyle"
+                        ),
+                        dict(
+                            args=["type", "violin"],
+                            label="Violin",
+                            method="restyle"
+                        ),
+                        dict(
+                            args=["type", "box"],
+                            label="Box",
+                            method="restyle"
+                        )
+                    ]),
+                    direction="down",
+                    pad={"r": 10, "t": 10},
+                    showactive=True,
+                    x=0.1,
+                    xanchor="left",
+                    y=1.2,
+                    yanchor="top"
+                ),
+                dict(
                     buttons=list(xbutton),
                     direction="down",
                     pad={"r": 10, "t": 10},
                     showactive=True,
-                    x=0.3,
+                    x=0.250,
                     xanchor="left",
                     y=1.2,
                     yanchor="top"
@@ -446,13 +704,14 @@ class Plotly:
                     direction="down",
                     pad={"r": 10, "t": 10},
                     showactive=True,
-                    x=0.37,
+                    x=0.4,
                     xanchor="left",
                     y=1.2,
                     yanchor="top"
                 ),
             ],
-            autosize=True
+            autosize=True,
+            template="plotly_white"
         )
         plot_div = plot(fig, output_type='div', include_plotlyjs=True)
         return plot_div
