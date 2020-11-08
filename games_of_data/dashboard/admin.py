@@ -4,8 +4,8 @@ from .models import Customer,File
 
 @admin.register(Customer)
 class DashboardAdmin(admin.ModelAdmin):
-    list_display =("user_id","username","password","first_name","last_name","email")
+    list_display =("user_id","username","password","first_name","last_name","email","forgot_pwd_timestamp")
 
 @admin.register(File)
 class DashboardAdmin(admin.ModelAdmin):
-    list_display =("user_id","file_name","azur_file_name","drive","directory")
+    list_display =("user_id","file_name","azur_file_name","azur_file_share","azur_container",)

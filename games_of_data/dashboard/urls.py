@@ -18,8 +18,8 @@ urlpatterns = [
 
     path('email/',views.reset,name='reset'),
     path('email/post/',views.resetpassword,name="emailpost"),
-    path('reset/password/form/<int:encrypted>/',views.resetpasswrodform ,name="resetform"),
-    path('reset/password/',views.password,name="password"),
+    path('reset/password/form/',views.resetpasswrodform ,name="resetform"),
+    path('reset/password/<int:user_id>',views.password,name="password"),
 
     path('covid/',views.covid,name='custome')
 ]

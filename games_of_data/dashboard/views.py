@@ -1,8 +1,11 @@
+import time
+from datetime import datetime
 from django.shortcuts import render, HttpResponse
 from plotly.offline import plot
 import plotly.graph_objects as go
 import plotly.express as px
 import pandas as pd
+import urllib.parse
 from django.conf import settings
 from .models import Customer
 from .plotly import Plotly
@@ -222,7 +225,18 @@ def reset(request):
 
 
 def resetpasswrodform(request):
-    return render(request, 'resetpassword.html', {})
+
+    time_stamp = request.GET.get('stamp')
+    user_id = request.GET.get('id')
+    user = Customer.objects.filter(user_id=user_id).first()
+    print(user)
+    link_create_date = datetime.fromtimestamp(float(time_stamp))
+    current_date = datetime.now()
+    difference = current_date - link_create_date
+    if difference.seconds > 300 or user is None or user.forgot_pwd_timestamp != float(time_stamp) :
+        return HttpResponse("URL is expired")
+    else:
+        return render(request, 'resetpassword.html', {"user_id":int(user_id)})
 
 
 # forgot page email post request
@@ -232,9 +246,8 @@ def resetpassword(request):
     if (len(usr) != 0):
         sender_email = "akashdesai326@gmail.com"
         receiver_email = usr[0].email
-        strg = usr[0].username
+        strg = usr[0].user_id
         password = '@2020*qaZ'
-        i = int.from_bytes(strg.encode('utf-8'), byteorder='big')
         msg = MIMEMultipart('alternative')
 
         msg['Subject'] = "Visualize"
@@ -243,6 +256,9 @@ def resetpassword(request):
 
         # Create the body of the message (a plain-text and an HTML version).
         text = "Hi!\nHow are you?\nHere is the link you wanted:\nhttp://www.python.org"
+        time_stamp = time.time()
+        params = {'id': f"{strg}", 'stamp': f'{time_stamp}'}
+        Customer.objects.filter(user_id=strg).update(forgot_pwd_timestamp=time_stamp)
         html = """\
         <html>
           <head></head>
@@ -250,7 +266,7 @@ def resetpassword(request):
             <p>Hi!<br>
                Reset your password from below link<br>
                <hr>
-               <a href="http://127.0.0.1:8000/dashboard/reset/password/form/"""+ str(i) + """/">Reset your Password</a> you wanted.
+               <a href="http://127.0.0.1:8000/dashboard/reset/password/form/""" + f"?{urllib.parse.urlencode(params)}" + """">Reset your Password</a> you wanted.
             </p>
           </body>
         </html>
@@ -271,14 +287,14 @@ def resetpassword(request):
 
 
 # reset password page post request
-def password(request):
-    email = request.POST.get('email')
-    pwd = request.POST.get('password')
+def password(request, user_id):
+    id = user_id
+    pwd = request.POST.get("password")
     cpwd = request.POST.get('cpassword')
-    usr = Customer.objects.filter(email=email)
+    usr = Customer.objects.filter(user_id=user_id)
     if (len(usr) != 0):
         if (pwd == cpwd):
-            Customer.objects.filter(email=email).update(password=pwd)
+            Customer.objects.filter(user_id=user_id).update(password=pwd)
             return render(request, 'login.html')
         return render(request, 'resetpassword.html', {"error": "your password does not match with confirm password."})
     return render(request, 'resetpassword.html', {"error": "Email id does not exists."})
