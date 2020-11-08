@@ -10,5 +10,11 @@ class Customer(models.Model):
     last_name = models.CharField(max_length=15)
     email = models.EmailField(default=None)
 
+class File(models.Model):
+    user_id = models.ForeignKey(Customer,to_field="user_id",on_delete=models.CASCADE)
+    file_name = models.CharField(max_length=50)
+    azur_file_name = models.CharField(primary_key=True,max_length=50)
+    drive = models.CharField(max_length=50)
+    directory = models.CharField(max_length=50)
 
 

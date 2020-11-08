@@ -9,9 +9,8 @@ from .plotly import Plotly
 import smtplib, ssl
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
-
-
-
+from cryptography.fernet import Fernet
+from django.core.mail import send_mail
 # Create your views here.
 
 
@@ -80,34 +79,25 @@ def show_table(request):
 
 # graphs
 
-def chartjs(request):
-    df = pd.read_csv(settings.MEDIA_ROOT + '/' + request.session.get('file'))
-    columns = list(df.columns)
-    return render(request, 'dashboard/chart.html', context={'columns': columns[1:]})
-
-
-def chart(request):
-    df = pd.read_csv(settings.MEDIA_ROOT + '/' + request.session.get('file'))
-    columns = list(df.columns)
-    convert_dict = {request.POST.get('y'): int}
-
-    df = df.astype(convert_dict)
-
-    x = list(df[request.POST.get('x')])
-    # print(x)
-    print(request.POST.get('x'))
-    print(request.POST.get('y'))
-    y = list(df[request.POST.get('y')])
-    return render(request, 'dashboard/chart.html', context={'columns': columns[1:],
-                                                            'x': x[1:11],
-                                                            'y': y[1:11]})
-
-
 # plotly page
 def plotly(request):
-    df = pd.read_csv(settings.MEDIA_ROOT + '/' + request.session.get('file'))
-    columns = list(df.columns)
-    return render(request, 'dashboard/plotly.html', context={'columns': columns[1:]})
+    excel_data = list()
+    excel_heading = list()
+    path = str(settings.MEDIA_ROOT + '/' + request.session.get('file'))
+    f = open(path, 'r')
+    rows = []
+    frow = list()
+    i = 0
+    for row in f:
+        if i == 0:
+            row = row[1:].strip('\n').split(',')
+            excel_heading = row
+            i = 1
+        else:
+            row = row.strip('\n').split(',')
+            excel_data.append(row[1:])
+    return render(request, 'dashboard/plotly.html', context={ "excel_data": excel_data,
+                                                             "excel_heading": excel_heading})
 
 
 # plotly graph
@@ -127,25 +117,55 @@ def plotly_chart(request):
     x = request.POST.get('x')
     y = request.POST.get('y')
     f = request.session.get('file')
+    color = request.POST.get('color')
     graph = request.POST.get('graph')
     graph_list = []
     if graph == 'Scatter':
-        plot_div = Plotly.Scatter(x, y, f)
+        plot_div = Plotly.Scatter(x, y, f,color)
+    if graph == 'line':
+        plot_div = Plotly.line(x, y, f,color)
     if graph == 'bar':
-        plot_div = Plotly.bar(x, y, f)
+        plot_div = Plotly.bar(x, y, f,color)
+    if graph == 'pie':
+        plot_div = Plotly.pie(x, y, f,color)
+    if graph == 'bubble':
+        plot_div = Plotly.bubble(x, y, f,color)
+    if graph == 'gantt':
+        plot_div = Plotly.gantt(x, y, f,color)
     if graph == 'box':
-        plot_div = Plotly.box(x, y, f)
+        plot_div = Plotly.box(x, y, f,color)
+    if graph == 'boxscatter':
+        plot_div = Plotly.box_scatter(x, y, f, color)
     if graph == 'violin':
-        plot_div = Plotly.violin(x, y, f)
+        plot_div = Plotly.violin(x, y, f,color)
     if graph == 'violin_box':
-        plot_div = Plotly.violin_box(x, y, f)
+        plot_div = Plotly.violin_box(x, y, f,color)
     if graph == 'violin_box_scatter':
-        plot_div = Plotly.violn_box_scatter(x, y, f)
+        plot_div = Plotly.violn_box_scatter(x, y, f,color)
     if graph == 'strip':
-        plot_div = Plotly.strip(x, y, f)
-    table = plot(tab, output_type='div', include_plotlyjs=True)
+        plot_div = Plotly.strip(x, y, f,color)
+    #table = plot(tab, output_type='div', include_plotlyjs=True)
+    excel_data = list()
+    excel_heading = list()
+    path = str(settings.MEDIA_ROOT + '/' + request.session.get('file'))
+    f = open(path, 'r')
+    rows = []
+    frow = list()
+    i = 0
+    for row in f:
+        if i == 0:
+            row = row[1:].strip('\n').split(',')
+            excel_heading = row
+            i = 1
+        else:
+            row = row.strip('\n').split(',')
+            excel_data.append(row[1:])
+
     return render(request, 'dashboard/plotly.html', context={'plot_div': plot_div,
-                                                             'table':table})
+                                                             # 'table':table,
+                                                             "excel_data": excel_data,
+                                                             "excel_heading": excel_heading
+                                                             })
 
 
 
@@ -212,8 +232,11 @@ def resetpassword(request):
     if (len(usr) != 0):
         sender_email = "akashdesai326@gmail.com"
         receiver_email = usr[0].email
+        strg = usr[0].username
         password = '@2020*qaZ'
+        i = int.from_bytes(strg.encode('utf-8'), byteorder='big')
         msg = MIMEMultipart('alternative')
+
         msg['Subject'] = "Visualize"
         msg['From'] = sender_email
         msg['To'] = receiver_email
@@ -227,7 +250,7 @@ def resetpassword(request):
             <p>Hi!<br>
                Reset your password from below link<br>
                <hr>
-               <a href="http://127.0.0.1:8000/dashboard/reset/password/form/">Reset your Password</a> you wanted.
+               <a href="http://127.0.0.1:8000/dashboard/reset/password/form/"""+ str(i) + """/">Reset your Password</a> you wanted.
             </p>
           </body>
         </html>
