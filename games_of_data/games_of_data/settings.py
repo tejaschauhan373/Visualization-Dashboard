@@ -11,7 +11,15 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
 import os
+import pymongo
 from pathlib import Path
+import urllib.parse
+
+mongouri = "mongodb+srv://AkshatMehta:" + urllib.parse.quote(
+    "AkshatMehtaProjectOne") + "@cluster0.9on8n.mongodb.net/cluster0?retryWrites=true&w=majority"
+mongodb_connection_string = 'mongodb://localhost:27017/'
+client = pymongo.MongoClient(mongouri)
+database = client['flipkart']
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -36,6 +44,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_plotly_dash.apps.DjangoPlotlyDashConfig',
+    'channels',
+    'channels_redis',
+    'bootstrap4',
+    'dpd_static_support',
+    'dashboard.apps.DashboardConfig',
+
 ]
 
 MIDDLEWARE = [
@@ -46,21 +61,12 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django_plotly_dash.apps.DjangoPlotlyDashConfig',
-    'django_plotly_dash.middleware.BaseMiddleware'
-    'channels',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+    'django_plotly_dash.middleware.BaseMiddleware',
+    'django_plotly_dash.middleware.ExternalRedirectionMiddleware',
 ]
 
 ROOT_URLCONF = 'games_of_data.urls'
-
-CHANNEL_LAYERS = {
-    'default': {
-        'BACKEND': 'channels_redis.core.RedisChannelLayer',
-        'CONFIG': {
-            'hosts': [('127.0.0.1', 6379), ],
-        },
-    },
-}
 
 TEMPLATES = [
     {
@@ -78,7 +84,11 @@ TEMPLATES = [
     },
 ]
 
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
 WSGI_APPLICATION = 'games_of_data.wsgi.application'
+
+ASGI_APPLICATION = 'games_of_data.routing.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
@@ -90,6 +100,12 @@ DATABASES = {
     }
 }
 
+STATICFILES_FINDERS = [
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'django_plotly_dash.finders.DashAssetFinder',
+    'django_plotly_dash.finders.DashComponentFinder'
+]
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
 
@@ -124,7 +140,32 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
+STATICFILES_LOCATION = 'static'
 STATIC_URL = '/static/'
+STATIC_ROOT = 'static'
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'games_of_data/static')
+]
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+PLOTLY_COMPONENTS = [
+    'dash_core_components',
+    'dash_html_components',
+    'dash_bootstrap_components',
+    'dash_renderer',
+    'dpd_components',
+    'dpd_static_support',
+]
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            'hosts': [('127.0.0.1', 6379), ],
+        },
+    },
+}
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'games_of_data\static\media')
+MEDIA_URL = 'media/'
+
 X_FRAME_OPTIONS = 'SAMEORIGIN'

@@ -8,7 +8,6 @@
 
 venv
 .idea
-
 # User-specific stuff
 .idea/**/workspace.xml
 .idea/**/tasks.xml
@@ -109,5 +108,3 @@ fabric.properties
 .idea/codestream.xml
 
 # End of https://www.toptal.com/developers/gitignore/api/pycharm
-
-redis

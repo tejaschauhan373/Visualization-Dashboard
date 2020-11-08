@@ -1,0 +1,72 @@
+{% extends 'basic.html' %}
+{%load static%
+{%block content%}
+
+<div id="layoutSidenav_content" style="margin-right:20px;">
+                <main>
+                    <div class="container-fluid">
+                        <hr>
+                        <ol class="breadcrumb mb-4" style="background:white;">
+                            <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+                            <li class="breadcrumb-item active">Plotly</li>
+                        </ol>
+
+
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <form action = "/dashboard/show/plotly/" method="post" id="chartform">
+                                    {% csrf_token %}
+                                    <div class="row">
+
+                                         <div class="col">
+                                             <input type="text" class="form-control" name="x" placeholder="X parameter"><br>
+                                             <input type="text" class="form-control" name="y" placeholder="Y parameter">
+                                        </div>
+                                        <div class="col" >
+                                            <div class="input-group sm-3">
+                                              <div class="input-group-prepend">
+                                                <label class="input-group-text" for="inputGroupSelect01">Graphs</label>
+                                              </div>
+                                              <select class="custom-select" id="inputGroupSelect01" name = "graph">
+                                                  <option selected>Choose...</option>
+                                                  <option value="Scatter">Scatter</option>
+                                                  <option value="bar">bar</option>
+                                                  <option value="box">box</option>
+                                                  <option value="violin">violin</option>
+                                                  <option value="violin_box">violin_box</option>
+                                                  <option value="violin_box_scatter">violin_box_scatter</option>
+                                                  <option value="strip">strip</option>
+                                              </select>
+                                            </div>
+                                            <div class="btn-group dropright" style="margin-top:22px;">
+                                                <input type="submit" class="btn btn-info" value="Submit">
+                                            </div>
+                                        </div>
+                                  </div>
+
+                                </form>
+                            </div>
+                        </div>
+                                {% autoescape on %}
+                                {{ table |safe}}
+                                {% endautoescape %}
+
+                                {% autoescape on %}
+                                {{ plot_div |safe}}
+                                {% endautoescape %}
+                    </div>
+                </main>
+                <footer class="py-4 bg-light mt-auto">
+                    <div class="container-fluid">
+                        <div class="d-flex align-items-center justify-content-between small">
+                            <div class="text-muted">Copyright &copy; Your Website 2020</div>
+                            <div>
+                                <a href="#">Privacy Policy</a>
+                                &middot;
+                                <a href="#">Terms &amp; Conditions</a>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+{%endblock%}
