@@ -10,7 +10,7 @@ if path.isfile('config.json'):
 with open(config_file, 'r') as configs:
     config_object = json.loads(configs.read())
 
-azure_storage_access_key = config_object["storage_access_key"]
-azure_storage_account_name = config_object["storage_account_name"]
-azure_connection_string = config_object["azure_connection_string"]
-azure_share_name = config_object[""]
+azure_storage_access_key = config_object["default"]["storage_access_key"]
+azure_storage_account_name = config_object["default"]["storage_account_name"]
+azure_connection_string = config_object["default"]["azure_connection_string"]
+azure_share_name = config_object["default"]["share_name"]
