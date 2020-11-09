@@ -18,4 +18,12 @@ class File(models.Model):
     azur_file_share = models.CharField(max_length=50)
     azur_container = models.CharField(max_length=50)
 
+class SignUpVerification(models.Model):
+    username = models.CharField(max_length=15)
+    password = models.CharField(max_length=15)
+    first_name = models.CharField(max_length=15)
+    last_name = models.CharField(max_length=15)
+    email = models.EmailField(default=None)
+    signup_timestamp = models.FloatField(default=0)
+
 

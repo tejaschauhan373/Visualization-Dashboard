@@ -203,6 +203,8 @@ def register(request):
         return render(request, 'register.html', {'error': 'This username already exists'})
 
 
+
+
 # authenticate user
 
 def auth_user(request):
