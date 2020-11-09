@@ -1,0 +1,8 @@
+{
+  "default": {
+    "azure_connection_string": "your_connection_string",
+    "storage_account_name": "account_name",
+    "storage_access_key": "account_access_key",
+    "share_name": ""
+  }
+}
