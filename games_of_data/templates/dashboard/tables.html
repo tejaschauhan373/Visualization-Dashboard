@@ -1,15 +1,19 @@
 {% extends 'basic.html' %}
 {%load static%
 {%block content%}
-
+<div class="row">
+    <div class="col">
+        <div class="col-auto mr-auto">
+            <div class="card mb-4" style=" margin-left:160px; margin-top:70px;">
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid">
-                        <h1 class="mt-4">Tables</h1>
-                        <ol class="breadcrumb mb-4">
-                            <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
-                            <li class="breadcrumb-item active">Tables</li>
-                        </ol>
+
+<!--                        <ol class="breadcrumb mb-4">-->
+<!--                            <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>-->
+<!--                            <li class="breadcrumb-item active">Tables</li>-->
+<!--                        </ol>-->
+                        <br>
                         <div class="card mb-4">
                             <div class="card-body">
                                 <form action="/dashboard/table/upload/" method="post" enctype="multipart/form-data">
@@ -42,23 +46,23 @@
                             </div>
                             <div class="card-body">
 
-                                <div class="table-responsive">
-                                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                <div class="table-responsive" style="height:600px;">
+                                    <table class="table table-bordered" id="dataTable" width="100%" >
                                         <thead>
-                                            <tr>
+                                            <tr style="font-size:13px;">
                                                 {%for heading in excel_heading%}
                                                     <th>{{heading}}&nbsp;&nbsp;</th>
                                                 {%endfor%}
                                             </tr>
                                         </thead>
-                                        <tfoot>
-                                             {%for heading in excel_heading%}
-                                                    <th>{{heading}}&nbsp;&nbsp;</th>
-                                                {%endfor%}
-                                        </tfoot>
+<!--                                        <tfoot>-->
+<!--                                             {%for heading in excel_heading%}-->
+<!--                                                    <th>{{heading}}&nbsp;&nbsp;</th>-->
+<!--                                                {%endfor%}-->
+<!--                                        </tfoot>-->
                                         <tbody>
                                             {% for row in excel_data %}
-                                                <tr>
+                                                <tr style="font-size:13px;height:5px;">
                                                     {% for cell in row %}
                                                     <td>{{ cell }}&nbsp;&nbsp;</td>
                                                     {%endfor%}
@@ -73,17 +77,9 @@
                         </div>
                     </div>
                 </main>
-                <footer class="py-4 bg-light mt-auto">
-                    <div class="container-fluid">
-                        <div class="d-flex align-items-center justify-content-between small">
-                            <div class="text-muted">Copyright &copy; Your Website 2020</div>
-                            <div>
-                                <a href="#">Privacy Policy</a>
-                                &middot;
-                                <a href="#">Terms &amp; Conditions</a>
-                            </div>
-                        </div>
-                    </div>
-                </footer>
             </div>
+            </div>
+        </div>
+    </div>
+</div>
 {%endblock%}

@@ -162,7 +162,7 @@ CHANNEL_LAYERS = {
         'CONFIG': {
             'hosts': [('127.0.0.1', 6379), ],
         },
-    },
+     },
 }
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'games_of_data\static\media')
