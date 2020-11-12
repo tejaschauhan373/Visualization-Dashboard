@@ -7,13 +7,15 @@ import plotly.express as px
 import pandas as pd
 import urllib.parse
 from django.conf import settings
-from .models import Customer
+from .models import Customer, SignUpVerification
 from .plotly import Plotly
 import smtplib, ssl
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from cryptography.fernet import Fernet
 from django.core.mail import send_mail
+
+
 # Create your views here.
 
 
@@ -32,7 +34,7 @@ def table_upload(request):
             df = pd.read_excel(excel_file)
             csv_file = df.to_csv(settings.MEDIA_ROOT + '/' + (excel_file.name).replace('.xlsx', '.csv'))
             request.session['file'] = (excel_file.name).replace('.xlsx', '.csv')
-        if('.csv' in excel_file.name):
+        if ('.csv' in excel_file.name):
             df = pd.read_csv(excel_file)
             csv_file = df.to_csv(settings.MEDIA_ROOT + '/' + excel_file.name)
             request.session['file'] = excel_file.name
@@ -99,7 +101,7 @@ def plotly(request):
         else:
             row = row.strip('\n').split(',')
             excel_data.append(row[1:])
-    return render(request, 'dashboard/plotly.html', context={ "excel_data": excel_data,
+    return render(request, 'dashboard/plotly.html', context={"excel_data": excel_data,
                                                              "excel_heading": excel_heading})
 
 
@@ -124,30 +126,30 @@ def plotly_chart(request):
     graph = request.POST.get('graph')
     graph_list = []
     if graph == 'Scatter':
-        plot_div = Plotly.Scatter(x, y, f,color)
+        plot_div = Plotly.Scatter(x, y, f, color)
     if graph == 'line':
-        plot_div = Plotly.line(x, y, f,color)
+        plot_div = Plotly.line(x, y, f, color)
     if graph == 'bar':
-        plot_div = Plotly.bar(x, y, f,color)
+        plot_div = Plotly.bar(x, y, f, color)
     if graph == 'pie':
-        plot_div = Plotly.pie(x, y, f,color)
+        plot_div = Plotly.pie(x, y, f, color)
     if graph == 'bubble':
-        plot_div = Plotly.bubble(x, y, f,color)
+        plot_div = Plotly.bubble(x, y, f, color)
     if graph == 'gantt':
-        plot_div = Plotly.gantt(x, y, f,color)
+        plot_div = Plotly.gantt(x, y, f, color)
     if graph == 'box':
-        plot_div = Plotly.box(x, y, f,color)
+        plot_div = Plotly.box(x, y, f, color)
     if graph == 'boxscatter':
         plot_div = Plotly.box_scatter(x, y, f, color)
     if graph == 'violin':
-        plot_div = Plotly.violin(x, y, f,color)
+        plot_div = Plotly.violin(x, y, f, color)
     if graph == 'violin_box':
-        plot_div = Plotly.violin_box(x, y, f,color)
+        plot_div = Plotly.violin_box(x, y, f, color)
     if graph == 'violin_box_scatter':
-        plot_div = Plotly.violn_box_scatter(x, y, f,color)
+        plot_div = Plotly.violn_box_scatter(x, y, f, color)
     if graph == 'strip':
-        plot_div = Plotly.strip(x, y, f,color)
-    #table = plot(tab, output_type='div', include_plotlyjs=True)
+        plot_div = Plotly.strip(x, y, f, color)
+    # table = plot(tab, output_type='div', include_plotlyjs=True)
     excel_data = list()
     excel_heading = list()
     path = str(settings.MEDIA_ROOT + '/' + request.session.get('file'))
@@ -171,9 +173,10 @@ def plotly_chart(request):
                                                              })
 
 
-
 def covid(request):
-    return render(request,'dashboard/covid.html')
+    return render(request, 'dashboard/covid.html')
+
+
 # user login logout
 
 def login(request):
@@ -203,8 +206,6 @@ def register(request):
         return render(request, 'register.html', {'error': 'This username already exists'})
 
 
-
-
 # authenticate user
 
 def auth_user(request):
@@ -226,19 +227,31 @@ def reset(request):
     return render(request, 'email.html')
 
 
-def resetpasswrodform(request):
+def confirmation(request):
+    time_stamp = request.GET.get('stamp')
+    user = SignUpVerification.objects.filter(forgot_pwd_timestamp=time_stamp).first()
+    if user is None or user.signup_timestamp != float(time_stamp):
+        return render(request, 'alert-message.html',
+                      {"message_type": "fail", "message": "Can't Verified, Please try again"})
+    elif user.forgot_pwd_timestamp == float(time_stamp):
+        SignUpVerification.objects.filter(forgot_pwd_timestamp=time_stamp).delete()
+        newuser = Customer.objects.create(username=user.username, password=user.password, first_name=user.first_name,
+                                          last_name=user.last_name, email=user.email)
+        newuser.save()
+        return render(request, 'alert-message.html', {"message_type": "success", "message": "Verified Successfully"})
 
+
+def resetpasswrodform(request):
     time_stamp = request.GET.get('stamp')
     user_id = request.GET.get('id')
     user = Customer.objects.filter(user_id=user_id).first()
-    print(user)
     link_create_date = datetime.fromtimestamp(float(time_stamp))
     current_date = datetime.now()
     difference = current_date - link_create_date
-    if difference.seconds > 300 or user is None or user.forgot_pwd_timestamp != float(time_stamp) :
+    if difference.seconds > 300 or user is None or user.forgot_pwd_timestamp != float(time_stamp):
         return HttpResponse("URL is expired")
     else:
-        return render(request, 'resetpassword.html', {"user_id":int(user_id)})
+        return render(request, 'resetpassword.html', {"user_id": int(user_id)})
 
 
 # forgot page email post request

@@ -3,23 +3,24 @@ from . import views
 from .dash_apps.finished_apps import covid
 
 urlpatterns = [
-    path('home/', views.home, name = 'home'),
-    path('login/',views.login,name = 'login'),
-    path('signup/',views.signup, name = 'signup'),
-    path('register/',views.register,name='register'),
-    path('auth_user/',views.auth_user,name="authuser"),
-    path('logout/',views.logout,name = 'logout'),
-    path('table/',views.table,name = 'table'),
+    path('home/', views.home, name='home'),
+    path('login/', views.login, name='login'),
+    path('signup/', views.signup, name='signup'),
+    path('register/', views.register, name='register'),
+    path('auth_user/', views.auth_user, name="authuser"),
+    path('logout/', views.logout, name='logout'),
+    path('table/', views.table, name='table'),
     path('table/upload/', views.table_upload, name='table_upload'),
-    path('table/show/',views.show_table,name = "show_table"),
+    path('table/show/', views.show_table, name="show_table"),
 
-    path('plotly/',views.plotly,name="plotly"),
-    path('show/plotly/',views.plotly_chart,name="plotly chart"),
+    path('plotly/', views.plotly, name="plotly"),
+    path('show/plotly/', views.plotly_chart, name="plotly chart"),
 
-    path('email/',views.reset,name='reset'),
-    path('email/post/',views.resetpassword,name="emailpost"),
-    path('reset/password/form/',views.resetpasswrodform ,name="resetform"),
-    path('reset/password/<int:user_id>',views.password,name="password"),
+    path('email/varification', views.confirmation, name='reset'),
+    path('email/', views.reset, name='reset'),
+    path('email/post/', views.resetpassword, name="emailpost"),
+    path('reset/password/form/', views.resetpasswrodform, name="resetform"),
+    path('reset/password/<int:user_id>', views.password, name="password"),
 
-    path('covid/',views.covid,name='custome')
+    path('covid/', views.covid, name='custome')
 ]
