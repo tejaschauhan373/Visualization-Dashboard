@@ -21,6 +21,12 @@
                                                     {{message}}
                                                 </div>
                                             {% endifequal %}
+                                            {% ifequal message_type|stringformat:"s" "info" %}
+                                                <div class="alert alert-info" role="alert">
+                                                    {{ message }}
+                                                </div>
+                                            {% endifequal %}
+
                                     </div>
                                     <div class="card-footer text-center">
                                         <div class="small"><a href="/dashboard/signup/">Need an account? Sign up!</a></div>

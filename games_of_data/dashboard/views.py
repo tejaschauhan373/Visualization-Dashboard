@@ -13,7 +13,7 @@ import smtplib, ssl
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from cryptography.fernet import Fernet
-from django.core.mail import send_mail
+from .mail_sending import send_mail
 
 
 # Create your views here.
@@ -194,13 +194,15 @@ def register(request):
     pwd = request.POST.get('password')
     email = request.POST.get('email')
     cpassword = request.POST.get('cpassword')
+    time_stamp = time.time()
+    send_mail(email, "Verification mail", uname, time_stamp)
     usr = Customer.objects.filter(username=uname)
     if len(usr) == 0 and pwd == cpassword:
-        newuser = Customer.objects.create(username=uname, password=pwd, first_name=fname, last_name=lname, email=email)
+        newuser = SignUpVerification.objects.create(username=uname, password=pwd, first_name=fname, last_name=lname,
+                                                    email=email, signup_timestamp=time_stamp)
         newuser.save()
-        nuser = Customer.objects.get(username=uname)
-        print(nuser.user_id)
-        return render(request, 'basic.html', {})
+        return render(request, 'alert-message.html', {"message_type": "info",
+                                                      "message": "Mail has been sent to your email address, please verify it."})
     else:
         print("here")
         return render(request, 'register.html', {'error': 'This username already exists'})
@@ -227,14 +229,14 @@ def reset(request):
     return render(request, 'email.html')
 
 
-def confirmation(request):
-    time_stamp = request.GET.get('stamp')
-    user = SignUpVerification.objects.filter(forgot_pwd_timestamp=time_stamp).first()
+def confirmation(request, time_stamp):
+    time_stamp = float(time_stamp)
+    user = SignUpVerification.objects.filter(signup_timestamp=time_stamp).first()
     if user is None or user.signup_timestamp != float(time_stamp):
         return render(request, 'alert-message.html',
                       {"message_type": "fail", "message": "Can't Verified, Please try again"})
-    elif user.forgot_pwd_timestamp == float(time_stamp):
-        SignUpVerification.objects.filter(forgot_pwd_timestamp=time_stamp).delete()
+    elif user.signup_timestamp == float(time_stamp):
+        SignUpVerification.objects.filter(signup_timestamp=time_stamp).delete()
         newuser = Customer.objects.create(username=user.username, password=user.password, first_name=user.first_name,
                                           last_name=user.last_name, email=user.email)
         newuser.save()

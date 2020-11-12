@@ -16,7 +16,7 @@ urlpatterns = [
     path('plotly/', views.plotly, name="plotly"),
     path('show/plotly/', views.plotly_chart, name="plotly chart"),
 
-    path('email/varification', views.confirmation, name='reset'),
+    path('email/verification/<str:time_stamp>', views.confirmation, name='reset'),
     path('email/', views.reset, name='reset'),
     path('email/post/', views.resetpassword, name="emailpost"),
     path('reset/password/form/', views.resetpasswrodform, name="resetform"),
