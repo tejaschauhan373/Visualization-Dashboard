@@ -6,8 +6,6 @@ import os
 
 file_service = FileService(account_name=azure_storage_account_name, account_key=azure_storage_access_key)
 file_service.create_share(azure_share_name)
-print("azure_storage_account_name",azure_storage_account_name, "azure_storage_access_key",azure_storage_access_key)
-print("azure_share_name",azure_share_name)
 
 def upload_file_to_azure(directory_name: str, azure_file_name: str, local_file_path: str,
                 content_type: str):

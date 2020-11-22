@@ -61,7 +61,6 @@ def view_user_file(request, azure_file_name: str):
             if not os.path.exists(DIR_DESTINATION):
                 os.makedirs(DIR_DESTINATION)
             get_file_from_azure(str(request.session['user']), azure_file_name, file_path)
-        print(file_path)
         f = open(file_path, 'r')
         rows = []
         frow = list()
@@ -165,8 +164,6 @@ def table_upload(request):
     request.session["file_name_dict"] = {"user_file_name": excel_file.name, "azure_file_name": azure_file_name}
     fs = FileSystemStorage(location=DIR_DESTINATION)
     file_path = os.path.join(DIR_DESTINATION, azure_file_name)
-    print(azure_file_name, DIR_DESTINATION)
-    print(excel_file)
     fs.save(azure_file_name, excel_file)
     if len(save_to_cloud_checkbox) > 0:
         File.objects.create(user_id=Customer.objects.filter(user_id=request.session["user"])[0], file_name=excel_file.name,
@@ -209,7 +206,6 @@ def show_table(request):
     DIR_DESTINATION = os.path.join(MEDIA_ROOT, str(request.session['user']))
     azure_file_name = request.session['file_name_dict']['azure_file_name']
     file_path = os.path.join(DIR_DESTINATION, azure_file_name)
-    print(file_path)
     f = open(file_path, 'r')
     rows = []
     frow = list()
@@ -362,7 +358,6 @@ def register(request):
         return render(request, 'alert-message.html', {"message_type": "info",
                                                       "message": "Mail has been sent to your email address, please verify it."})
     else:
-        print("here")
         return render(request, 'register.html', {'error': 'This username already exists'})
 
 
@@ -426,8 +421,6 @@ def change_password_after_login(request):
     new_password_first = request.POST.get('new_password_first')
     new_password_second = request.POST.get('new_password_second')
     current_password = request.POST.get('current_password')
-    
-    print(new_password_second, new_password_first)
     if new_password_first != new_password_second:
         return render(request, 'reset-password.html', {'message': "new password and confirm password are different!", "success":"false"})
     
