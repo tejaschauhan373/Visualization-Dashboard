@@ -140,12 +140,13 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
-STATICFILES_LOCATION = 'static'
+
 STATIC_URL = '/static/'
-STATIC_ROOT = 'static'
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'games_of_data/static')
+    os.path.join(BASE_DIR, 'static')
 ]
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'assets')
 
 PLOTLY_COMPONENTS = [
     'dash_core_components',
@@ -162,10 +163,10 @@ CHANNEL_LAYERS = {
         'CONFIG': {
             'hosts': [('127.0.0.1', 6379), ],
         },
-     },
+    },
 }
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'games_of_data\static\media')
+MEDIA_ROOT = os.path.join(os.path.join(os.path.join(BASE_DIR, 'games_of_data'), 'static'), 'media')
 MEDIA_URL = 'media/'
 
 X_FRAME_OPTIONS = 'SAMEORIGIN'
