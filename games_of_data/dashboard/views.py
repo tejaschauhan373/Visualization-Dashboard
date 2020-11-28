@@ -61,7 +61,7 @@ def view_user_file(request, azure_file_name: str):
             if not os.path.exists(DIR_DESTINATION):
                 os.makedirs(DIR_DESTINATION)
             get_file_from_azure(str(request.session['user']), azure_file_name, file_path)
-        f = open(file_path, 'r')
+        f = open(file_path, 'r',  encoding = "utf-8")
         rows = []
         frow = list()
         i = 0
@@ -75,7 +75,7 @@ def view_user_file(request, azure_file_name: str):
                 rows.append(row[1:])
         f.close()
         return render(request, 'dashboard/show_table.html', context={'frow': frow,
-                                                                    'rows': rows})
+                                                                    'rows': rows, 'file_name':file_details.file_name})
     else:
         return render(request, 'basic.html', {'user_id': request.session['user']})
 
@@ -96,7 +96,7 @@ def download_file(request, azure_file_name: str):
         os.makedirs(downloads_directory)
     downloadable_file_path = os.path.join(downloads_directory, f"{uuid1().hex}"+azure_file_name)
     get_file_from_azure(str(request.session['user']), azure_file_name, downloadable_file_path)
-    with open(downloadable_file_path, 'r') as file:
+    with open(downloadable_file_path, 'r', encoding="utf-8") as file:
         mime_type, _ = mimetypes.guess_type(downloadable_file_path)
         response = HttpResponse(file, content_type=mime_type)
         response['Content-Disposition'] = f"attachment; filename={file_details.file_name}"
@@ -177,7 +177,7 @@ def table_upload(request):
         upload_file_to_azure(directory_name=request.session["user"], azure_file_name= azure_file_name, local_file_path=file_path,content_type=content_type)
     excel_data = list()
     excel_heading = list()
-    f = open(file_path, 'r')
+    f = open(file_path, 'r', encoding = "utf-8")
     rows = []
     frow = list()
     i = 0
@@ -192,7 +192,7 @@ def table_upload(request):
     f.close()
     return render(request, "dashboard/tables.html", context={
         "excel_data": excel_data,
-        "excel_heading": excel_heading})
+        "excel_heading": excel_heading, "file_name":excel_file.name})
 
 
 # show table
@@ -206,7 +206,7 @@ def show_table(request):
     DIR_DESTINATION = os.path.join(MEDIA_ROOT, str(request.session['user']))
     azure_file_name = request.session['file_name_dict']['azure_file_name']
     file_path = os.path.join(DIR_DESTINATION, azure_file_name)
-    f = open(file_path, 'r')
+    f = open(file_path, 'r', encoding = "utf-8")
     rows = []
     frow = list()
     i = 0
@@ -220,7 +220,7 @@ def show_table(request):
             rows.append(row[1:])
     f.close()
     return render(request, 'dashboard/show_table.html', context={'frow': frow,
-                                                                 'rows': rows})
+                                                                 'rows': rows, 'file_name':request.session['file_name_dict']['user_file_name']})
 
 
 # graphs
@@ -236,7 +236,7 @@ def plotly(request):
     if not os.path.exists(file_path):
         return render(request, 'basic.html', {'user_id': request.session['user']})
     else:
-        f = open(file_path, 'r')
+        f = open(file_path, 'r',  encoding = "utf-8")
         rows = []
         frow = list()
         i = 0
@@ -308,7 +308,7 @@ def plotly_chart(request):
     excel_heading = list()
     DIR_DESTINATION = os.path.join(MEDIA_ROOT, str(request.session['user']))
     file_path = os.path.join(DIR_DESTINATION,  request.session['file_name_dict']['azure_file_name'])
-    f = open(file_path, 'r')
+    f = open(file_path, 'r',  encoding = "utf-8")
     rows = []
     frow = list()
     i = 0
@@ -334,7 +334,10 @@ def covid(request):
 # user login logout
 
 def login(request):
-    return render(request, 'login.html')
+    if "user" in request.session:
+        return render(request, 'basic.html',context={'user_id': request.session['user']})
+    else:
+        return render(request, 'login.html')
 
 
 def signup(request):
@@ -499,6 +502,19 @@ def logout(request):
         del request.session['fname']
         del request.session['lname']
         del request.session['file']
+
+        try:
+            DIR_DESTINATION = os.path.join(MEDIA_ROOT, str(request.session['user']))
+            for file in  os.listdir(DIR_DESTINATION):
+                try:
+                    os.remove(os.path.join(DIR_DESTINATION,file))
+                except:
+                    traceback.print_exc()
+                    print(f"{file} - deletion failed")
+            if not os.listdir(DIR_DESTINATION):
+                os.remove(DIR_DESTINATION)
+        except:
+            traceback.print_exc()
     except KeyError:
         pass
     return render(request, 'basic.html')
