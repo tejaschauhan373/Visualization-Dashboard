@@ -3,11 +3,11 @@ import ssl
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from .mail_html_text import get_confirmation_mail_html
-
+from config import sender_mail, sender_mail_pwd
 
 def send_mail(receiver_email: str, subject: str, id: int, time_stamp: float):
-    sender_email = "dream13tejas@gmail.com"
-    password = 'RANVEER@2018'
+    sender_email = "akashdesai326@gmail.com"
+    password = "@2020*qaZ"
     msg = MIMEMultipart('alternative')
     text = subject
     msg['Subject'] = "Visualize"
