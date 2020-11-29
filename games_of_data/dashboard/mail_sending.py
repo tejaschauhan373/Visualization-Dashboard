@@ -6,8 +6,8 @@ from .mail_html_text import get_confirmation_mail_html
 from config import sender_mail, sender_mail_pwd
 
 def send_mail(receiver_email: str, subject: str, id: int, time_stamp: float):
-    sender_email = "akashdesai326@gmail.com"
-    password = "@2020*qaZ"
+    sender_email = sender_mail
+    password = sender_mail_pwd
     msg = MIMEMultipart('alternative')
     text = subject
     msg['Subject'] = "Visualize"
