@@ -21,6 +21,10 @@
     cd games_of_data
     pip install -r requirements.txt
     ```
+ 4. Make config.json file from example.config.json
+    
+    * Make copy of example.config.json and name it config.json
+    * Fill your azure account and mail details
  
  <br/>
  
