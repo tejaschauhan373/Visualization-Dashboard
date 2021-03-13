@@ -20,14 +20,19 @@ app.layout = html.Div([
         ],
         value='Redmi Note 8 Pro'
     ),
-    html.Div(id='dd-output-container')
+    html.Div([
+        dcc.Graph(
+            id='crossfilter-indicator-scatter',
+        )
+    ], style={'width': '49%', 'display': 'inline-block', 'padding': '0 20'})
+    # html.Div(id='dd-output-container')
 ])
 
 
 
 
 @app.callback(
-    dash.dependencies.Output('dd-output-container', 'children'),
+    dash.dependencies.Output('crossfilter-indicator-scatter', 'figure'),
     [dash.dependencies.Input('demo-dropdown', 'value')])
 def update_output(value):
     second_df = df[df['model_name'] == value]
