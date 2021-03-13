@@ -5,7 +5,7 @@ import dash_html_components as html
 import dash_core_components as dcc
 from datetime import datetime
 
-df = pd.read_csv("Flipkart.csv")
+df = pd.read_csv(r"D:\Tejas\personal projects\gitlab private\e-commerce-monitoring-system\games_of_data\dashboard\dash_apps\finished_apps\Flipkart.csv")
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
@@ -30,9 +30,9 @@ app.layout = html.Div([
     dash.dependencies.Output('dd-output-container', 'children'),
     [dash.dependencies.Input('demo-dropdown', 'value')])
 def update_output(value):
-    second_df = df.loc[df['model_name'] == value]
+    second_df = df[df['model_name'] == value]
     second_df["utc_time_stamp"] = [datetime.fromutctimestamp(i) for i in second_df["utc_time_stamp"]]
-    fig = px.line(second_df, x="utc_time_stamp", y="price")
+    fig = px.line(second_df, x="utc_time_stamp", y="price", colour= "model_name")
     return fig
     return 'You have selected "{}"'.format(value)
 
