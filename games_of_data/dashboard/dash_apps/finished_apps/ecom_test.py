@@ -5,7 +5,8 @@ import dash_html_components as html
 import dash_core_components as dcc
 from datetime import datetime
 
-df = pd.read_csv(r"D:\Tejas\personal projects\gitlab private\e-commerce-monitoring-system\games_of_data\dashboard\dash_apps\finished_apps\Flipkart.csv")
+df = pd.read_csv(
+    r"D:\ak\Project\e-commerce-monitoring-system\games_of_data\dashboard\dash_apps\finished_apps\Flipkart.csv")
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
@@ -18,28 +19,28 @@ app.layout = html.Div([
             {'label': 'Redmi Note 9 Pro', 'value': 'Redmi Note 9 Pro'},
             {'label': 'S1 Pro', 'value': 'S1 Pro'}
         ],
-        value='Redmi Note 8 Pro'
+        value='select'
     ),
     html.Div([
         dcc.Graph(
             id='crossfilter-indicator-scatter',
         )
-    ], style={'width': '49%', 'display': 'inline-block', 'padding': '0 20'})
+    ], style={'width': '100%', 'display': 'inline-block', 'padding': '0 20'})
     # html.Div(id='dd-output-container')
 ])
-
-
 
 
 @app.callback(
     dash.dependencies.Output('crossfilter-indicator-scatter', 'figure'),
     [dash.dependencies.Input('demo-dropdown', 'value')])
 def update_output(value):
+    second_df = df
     second_df = df[df['model_name'] == value]
-    second_df["utc_time_stamp"] = [datetime.fromutctimestamp(i) for i in second_df["utc_time_stamp"]]
-    fig = px.line(second_df, x="utc_time_stamp", y="price", colour= "model_name")
+    second_df["utc_time_stamp"] = [datetime.fromtimestamp(i) for i in second_df["utc_time_stamp"]]
+    print(second_df.head())
+    fig = px.line(second_df, x="utc_time_stamp", y="price")
     return fig
-    return 'You have selected "{}"'.format(value)
+    # return 'You have selected "{}"'.format(value)
 
 
 if __name__ == "__main__":
