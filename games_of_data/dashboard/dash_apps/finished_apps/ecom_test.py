@@ -6,7 +6,7 @@ import dash_core_components as dcc
 from datetime import datetime
 
 df = pd.read_csv(
-    r"D:\ak\Project\e-commerce-monitoring-system\games_of_data\dashboard\dash_apps\finished_apps\Flipkart.csv")
+    r"mobile.csv")
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
