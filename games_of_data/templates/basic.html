@@ -8,7 +8,7 @@
     <meta name="description" content=""/>
     <meta name="author" content=""/>
     <link href="{% static '/css/styles.css' %}" rel="stylesheet"/>
-    <title>Data  Visualizer</title>
+    <title>Data Visualizer</title>
     <link rel="icon" type="image/png" href="{% static '/images/logo.png' %}"/>
     <link href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css" rel="stylesheet"
           crossorigin="anonymous"/>
@@ -21,7 +21,7 @@
 <body class="sb-nav-fixed" style="background:#eee;">
 {% load static %}
 <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark" style="height:45px;">
-    <a class="navbar-brand" href="/dashboard/home/">Visualize</a>
+    <a class="navbar-brand" href="/dashboard/home/">Visualization Dashboard</a>
     <!--    <button class="btn btn-link btn-sm order-1 order-lg-0" id="sidebarToggle" href="#"><i class="fas fa-bars"></i>-->
     <!--    </button>-->
     <!-- Navbar Search-->
@@ -58,7 +58,6 @@
         <nav class="sb-sidenav accordion sb-sidenav-light" id="sidenavAccordion" style="background:white;">
             <div class="sb-sidenav-menu">
                 <div class="nav">
-                    <div class="sb-sidenav-menu-heading">Core</div>
                     {%if request.session.user is not none%}
                     <a class="nav-link" href="/dashboard/table/upload/">
                         <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
@@ -102,10 +101,6 @@
                     {%endif%}   
 
                 </div>
-            </div>
-            <div class="sb-sidenav-footer">
-                <div class="small">Logged in as:</div>
-                Start Bootstrap
             </div>
         </nav>
     </div>
