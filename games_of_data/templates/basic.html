@@ -17,10 +17,18 @@
           crossorigin="anonymous"/>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js"
             crossorigin="anonymous"></script>
+<style>
+    .nav-link{
+        color:white !important;
+    }
+
+</style>
 </head>
-<body class="sb-nav-fixed" style="background:#eee;">
+<body class="sb-nav-fixed" style="background-image: url(/static/images/data-visualization.png); background-repeat: no-repeat;
+  background-attachment: fixed;background-position: center right; background-size:1210px 700px;">
 {% load static %}
 <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark" style="height:45px;">
+    <i><img src="/static/images/logo.png" width="35px" height="25px" style="margin-left:15px;"></i>
     <a class="navbar-brand" href="/dashboard/home/">Visualization Dashboard</a>
     <!--    <button class="btn btn-link btn-sm order-1 order-lg-0" id="sidebarToggle" href="#"><i class="fas fa-bars"></i>-->
     <!--    </button>-->
@@ -54,12 +62,12 @@
 
 <!--left sidebar -->
 <div id="layoutSidenav">
-    <div id="layoutSidenav_nav" style="width :150px;">
-        <nav class="sb-sidenav accordion sb-sidenav-light" id="sidenavAccordion" style="background:white;">
+    <div id="layoutSidenav_nav" style="width :160px;">
+        <nav class="sb-sidenav accordion sb-sidenav-light" id="sidenavAccordion" style="background:#343a40;">
             <div class="sb-sidenav-menu">
                 <div class="nav">
                     {%if request.session.user is not none%}
-                    <a class="nav-link" href="/dashboard/table/upload/">
+                    <a class="nav-link dash-link" href="/dashboard/table/upload/">
                         <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                         Dashboard
                     </a>
