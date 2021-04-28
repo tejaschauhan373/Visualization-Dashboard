@@ -30,7 +30,9 @@ df_bar = pd.DataFrame({
 
 df = px.data.gapminder().query("continent == 'Europe' and year == 2007 and pop > 2.e6")
 
-coulmn_names = df.columns
+coulmn_names = ['country', 'continent', 'year', 'lifeExp', 'pop', 'gdpPercap',
+                'iso_alpha', 'iso_num', 'total_bill', 'tip', 'sex', 'smoker', 'day',
+                'time', 'size', 'fips', 'unemp']
 fig1 = px.bar(df, y='pop', x='country', text='pop')
 fig1.update_traces(texttemplate='%{text:.2s}', textposition='outside')
 fig1.update_layout(uniformtext_minsize=8, uniformtext_mode='hide')
@@ -66,7 +68,7 @@ fig4 = px.scatter_3d(df, x='sepal_length', y='sepal_width', z='petal_width',
                      color='petal_length', symbol='species')
 # fig4.show()
 
-
+coulmn_name3d = coulmn_names + ['petal_width', 'sepal_width', 'sepal_length']
 app.layout = html.Div(children=[
     # All elements from the top of the page
     html.Div([
@@ -120,7 +122,7 @@ app.layout = html.Div(children=[
             html.Div([
                 dcc.Dropdown(
                     id='xaxis-column2',
-                    options=[{'label': i, 'value': i} for i in px.data.tips().columns],
+                    options=[{'label': i, 'value': i} for i in coulmn_names],
                     placeholder='select x-axis'
                 )
             ],
@@ -129,7 +131,7 @@ app.layout = html.Div(children=[
             html.Div([
                 dcc.Dropdown(
                     id='yaxis-column2',
-                    options=[{'label': i, 'value': i} for i in px.data.tips().columns],
+                    options=[{'label': i, 'value': i} for i in coulmn_names],
                     placeholder='select y-axis'
                 )
             ], style={'width': '48%', 'float': 'right', 'display': 'inline-block'}),
@@ -137,7 +139,7 @@ app.layout = html.Div(children=[
             html.Div([
                 dcc.Dropdown(
                     id='color2',
-                    options=[{'label': i, 'value': i} for i in px.data.tips().columns],
+                    options=[{'label': i, 'value': i} for i in coulmn_names],
                     placeholder='select color column')
             ], style={'width': '48%', 'display': 'inline-block'}),
 
@@ -170,7 +172,7 @@ app.layout = html.Div(children=[
             html.Div([
                 dcc.Dropdown(
                     id='xaxis-column3',
-                    options=[{'label': i, 'value': i} for i in map_columns],
+                    options=[{'label': i, 'value': i} for i in coulmn_names],
                     value='Fertility rate, total (births per woman)',
                     placeholder='select x-axis'
                 )
@@ -180,7 +182,7 @@ app.layout = html.Div(children=[
             html.Div([
                 dcc.Dropdown(
                     id='yaxis-column3',
-                    options=[{'label': i, 'value': i} for i in map_columns],
+                    options=[{'label': i, 'value': i} for i in coulmn_names],
                     placeholder='select y-axis'
                 )
             ], style={'width': '48%', 'float': 'right', 'display': 'inline-block'}),
@@ -188,7 +190,7 @@ app.layout = html.Div(children=[
             html.Div([
                 dcc.Dropdown(
                     id='color3',
-                    options=[{'label': i, 'value': i} for i in map_columns],
+                    options=[{'label': i, 'value': i} for i in coulmn_names],
                     placeholder='select color column')
             ], style={'width': '48%', 'display': 'inline-block'}),
 
@@ -215,7 +217,7 @@ app.layout = html.Div(children=[
             html.Div([
                 dcc.Dropdown(
                     id='xaxis-column4',
-                    options=[{'label': i, 'value': i} for i in coulmn_names],
+                    options=[{'label': i, 'value': i} for i in coulmn_name3d],
                     placeholder='select x-axis'
                 )
             ],
@@ -224,7 +226,7 @@ app.layout = html.Div(children=[
             html.Div([
                 dcc.Dropdown(
                     id='yaxis-column4',
-                    options=[{'label': i, 'value': i} for i in coulmn_names],
+                    options=[{'label': i, 'value': i} for i in coulmn_name3d],
                     placeholder='select y-axis'
                 )
             ], style={'width': '48%', 'float': 'right', 'display': 'inline-block'}),
@@ -232,7 +234,7 @@ app.layout = html.Div(children=[
             html.Div([
                 dcc.Dropdown(
                     id='zaxis-column4',
-                    options=[{'label': i, 'value': i} for i in coulmn_names],
+                    options=[{'label': i, 'value': i} for i in coulmn_name3d],
                     placeholder='select z-axis'
                 )
             ], style={'width': '48%', 'display': 'inline-block'}),
@@ -266,9 +268,16 @@ app.layout = html.Div(children=[
     ], className='row'),
 ])
 
+df1 = px.data.gapminder()
+df2 = px.data.tips()
+df = pd.read_csv("https://raw.githubusercontent.com/plotly/datasets/master/fips-unemp-16.csv",
+                 dtype={"fips": str})
+df_concat = pd.concat([df1, df2, df], axis=1)
+df = df_concat
+
 
 @app.callback(
-    [Output('graph1', 'figure')],
+    Output('graph1', 'figure'),
     [Input('xaxis-column1', 'value'),
      Input('yaxis-column1', 'value'),
      Input('graph_type1', 'value'),
@@ -279,7 +288,8 @@ def update_graph1(xaxis1, yaxis1, graph1, color1):
         fig1 = go.Figure()
         if graph1 is None:
             return fig1
-        df = px.data.gapminder().query("continent == 'Europe' and year == 2007 and pop > 2.e6")
+        # df = px.data.gapminder().query("continent == 'Europe' and year == 2007 and pop > 2.e6")
+
         graph_type = graph1.lower()
         if graph_type == "bar":
             # graph_type = graph_type.lower()
@@ -296,14 +306,14 @@ def update_graph1(xaxis1, yaxis1, graph1, color1):
         elif graph_type == "bubble":
             fig1 = px.scatter(df, y=yaxis1, x=xaxis1, hover_data=df.columns, color=color1)
 
-        return (fig1)
+        return fig1
 
     except:
         traceback.print_exc()
 
 
 @app.callback(
-    [Output('graph2', 'figure')],
+    Output('graph2', 'figure'),
     [Input('xaxis-column2', 'value'),
      Input('yaxis-column2', 'value'),
      Input('graph_type2', 'value'),
@@ -313,7 +323,7 @@ def update_graph2(xaxis2, yaxis2, graph2, color2):
         fig2 = go.Figure()
         if graph2 is None:
             return fig2
-        df = px.data.tips()
+        # df = px.data.tips()
         # df = px.data.gapminder().query("continent == 'Europe' and year == 2007 and pop > 2.e6")
         graph2 = graph2.lower()
         print(graph2)
@@ -330,13 +340,13 @@ def update_graph2(xaxis2, yaxis2, graph2, color2):
             fig2 = px.density_heatmap(df, x=xaxis2, y=yaxis2)
         # elif graph_type == ""
         # print(fig2)
-        return (fig2)
+        return fig2
     except:
         traceback.print_exc()
 
 
 @app.callback(
-    [Output('graph3', 'figure')],
+    Output('graph3', 'figure'),
     [Input('xaxis-column3', 'value'),
      Input('yaxis-column3', 'value'),
      Input('graph_type3', 'value'),
@@ -346,8 +356,8 @@ def update_graph3(xaxis3, yaxis3, graph3, color3):
         fig3 = go.Figure()
         if graph3 is None:
             return fig3
-        df = pd.read_csv("https://raw.githubusercontent.com/plotly/datasets/master/fips-unemp-16.csv",
-                         dtype={"fips": str})
+        # df = pd.read_csv("https://raw.githubusercontent.com/plotly/datasets/master/fips-unemp-16.csv",
+        #                  dtype={"fips": str})
         graph3 = graph3.lower()
         print(graph3)
         if graph3 == "choropleth":
@@ -363,13 +373,13 @@ def update_graph3(xaxis3, yaxis3, graph3, color3):
             fig3 = px.scatter_geo(df, locations=xaxis3, color=color3,
                                   hover_name=df.columns,
                                   projection="natural earth")
-        return (fig3)
+        return fig3
     except:
         traceback.print_exc()
 
 
 @app.callback(
-    [Output('graph4', 'figure')],
+    Output('graph4', 'figure'),
     [Input('xaxis-column4', 'value'),
      Input('yaxis-column4', 'value'),
      Input('zaxis-column4', 'value'),
@@ -389,10 +399,10 @@ def update_graph4(xaxis4, yaxis4, zaxis4, graph4):
                                              color='rgba(244,22,100,0.6)'
                                              )])
         elif graph4 == "scatter":
-            df = px.data.iris()
+            # df = px.data.iris()
             fig4 = px.scatter_3d(df, x='sepal_length', y='sepal_width', z='petal_width',
                                  color='petal_length', symbol='species')
-        return (fig4)
+        return fig4
     except:
         traceback.print_exc()
 
