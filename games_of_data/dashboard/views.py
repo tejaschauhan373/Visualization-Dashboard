@@ -19,7 +19,8 @@ from email.mime.text import MIMEText
 from cryptography.fernet import Fernet
 from .mail_sending import send_mail
 from uuid import uuid1
-from service.azure_service import upload_file_to_azure, delete_file_from_azure, get_file_from_azure, get_downloadable_url_of_azure_file
+from service.azure_service import upload_file_to_azure, delete_file_from_azure, get_file_from_azure, \
+    get_downloadable_url_of_azure_file
 # Create your views here.
 
 
@@ -35,7 +36,7 @@ def home(request):
 def file_delete(request, azure_file_name: str):
     if "user" not in request.session:
         return render(request, 'basic.html')
-    File.objects.filter(azur_file_name = azure_file_name).delete()
+    File.objects.filter(azur_file_name=azure_file_name).delete()
     DIR_DESTINATION = os.path.join(MEDIA_ROOT, str(request.session['user']))
     file_path = os.path.join(DIR_DESTINATION, azure_file_name)
     if os.path.exists(file_path):
@@ -49,11 +50,12 @@ def file_delete(request, azure_file_name: str):
             traceback.print_exc()
     return redirect(get_profile_picture)
 
+
 # Display saved file of user
 def view_user_file(request, azure_file_name: str):
     if "user" not in request.session:
         return render(request, 'basic.html')
-    file_details = File.objects.filter(azur_file_name = azure_file_name).first()    
+    file_details = File.objects.filter(azur_file_name=azure_file_name).first()
     if file_details:
         DIR_DESTINATION = os.path.join(MEDIA_ROOT, str(request.session['user']))
         file_path = os.path.join(DIR_DESTINATION, azure_file_name)
@@ -61,7 +63,7 @@ def view_user_file(request, azure_file_name: str):
             if not os.path.exists(DIR_DESTINATION):
                 os.makedirs(DIR_DESTINATION)
             get_file_from_azure(str(request.session['user']), azure_file_name, file_path)
-        f = open(file_path, 'r',  encoding = "utf-8")
+        f = open(file_path, 'r', encoding="utf-8")
         rows = []
         frow = list()
         i = 0
@@ -75,7 +77,7 @@ def view_user_file(request, azure_file_name: str):
                 rows.append(row[1:])
         f.close()
         return render(request, 'dashboard/show_table.html', context={'frow': frow,
-                                                                    'rows': rows, 'file_name':file_details.file_name})
+                                                                     'rows': rows, 'file_name': file_details.file_name})
     else:
         return render(request, 'basic.html', {'user_id': request.session['user']})
 
@@ -84,17 +86,17 @@ def view_user_file(request, azure_file_name: str):
 def download_file(request, azure_file_name: str):
     if "user" not in request.session:
         return render(request, 'basic.html')
-    file_details = File.objects.filter(azur_file_name = azure_file_name).first()
+    file_details = File.objects.filter(azur_file_name=azure_file_name).first()
     if file_details is None:
         return HttpResponse(f"You may have deleted {file_details.file_name} file")
     DIR_DESTINATION = os.path.join(MEDIA_ROOT, str(request.session['user']))
-    downloads_directory = os.path.join(DIR_DESTINATION,"downloads")
+    downloads_directory = os.path.join(DIR_DESTINATION, "downloads")
     if not os.path.exists(DIR_DESTINATION):
         os.makedirs(DIR_DESTINATION)
         os.makedirs(downloads_directory)
     elif not os.path.exists(downloads_directory):
         os.makedirs(downloads_directory)
-    downloadable_file_path = os.path.join(downloads_directory, f"{uuid1().hex}"+azure_file_name)
+    downloadable_file_path = os.path.join(downloads_directory, f"{uuid1().hex}" + azure_file_name)
     get_file_from_azure(str(request.session['user']), azure_file_name, downloadable_file_path)
     with open(downloadable_file_path, 'r', encoding="utf-8") as file:
         mime_type, _ = mimetypes.guess_type(downloadable_file_path)
@@ -137,6 +139,7 @@ def remove_profile_picture(request, user_id):
     # TODO: remove profile picture of user
     pass
 
+
 # upload table
 def table_upload(request):
     if "user" not in request.session:
@@ -145,7 +148,7 @@ def table_upload(request):
         return render(request, 'dashboard/tables.html', {})
     else:
         save_to_cloud_checkbox = list(request.POST.getlist('checks[]'))
-        
+
     excel_file = request.FILES["excel_file"]
     if ('.xlsx' in excel_file.name):
         df = pd.read_excel(excel_file)
@@ -160,24 +163,26 @@ def table_upload(request):
     DIR_DESTINATION = os.path.join(MEDIA_ROOT, str(request.session['user']))
     if not os.path.exists(DIR_DESTINATION):
         os.mkdir(DIR_DESTINATION)
-    azure_file_name = uuid1().hex+f".{excel_file.name.split('.')[-1]}"
+    azure_file_name = uuid1().hex + f".{excel_file.name.split('.')[-1]}"
     request.session["file_name_dict"] = {"user_file_name": excel_file.name, "azure_file_name": azure_file_name}
     fs = FileSystemStorage(location=DIR_DESTINATION)
     file_path = os.path.join(DIR_DESTINATION, azure_file_name)
     fs.save(azure_file_name, excel_file)
     if len(save_to_cloud_checkbox) > 0:
-        File.objects.create(user_id=Customer.objects.filter(user_id=request.session["user"])[0], file_name=excel_file.name,
+        File.objects.create(user_id=Customer.objects.filter(user_id=request.session["user"])[0],
+                            file_name=excel_file.name,
                             azur_file_name=azure_file_name,
                             azur_file_share="test", azur_container=str(request.session["user"]), file_type="csv",
                             file_size=fs.size(azure_file_name))
-        if excel_file.name.split('.')[-1] == "csv":  
+        if excel_file.name.split('.')[-1] == "csv":
             content_type = "text/csv"
         else:
-            content_type = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"             
-        upload_file_to_azure(directory_name=request.session["user"], azure_file_name= azure_file_name, local_file_path=file_path,content_type=content_type)
+            content_type = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        upload_file_to_azure(directory_name=request.session["user"], azure_file_name=azure_file_name,
+                             local_file_path=file_path, content_type=content_type)
     excel_data = list()
     excel_heading = list()
-    f = open(file_path, 'r', encoding = "utf-8")
+    f = open(file_path, 'r', encoding="utf-8")
     rows = []
     frow = list()
     i = 0
@@ -192,7 +197,7 @@ def table_upload(request):
     f.close()
     return render(request, "dashboard/tables.html", context={
         "excel_data": excel_data,
-        "excel_heading": excel_heading, "file_name":excel_file.name})
+        "excel_heading": excel_heading, "file_name": excel_file.name})
 
 
 # show table
@@ -206,7 +211,7 @@ def show_table(request):
     DIR_DESTINATION = os.path.join(MEDIA_ROOT, str(request.session['user']))
     azure_file_name = request.session['file_name_dict']['azure_file_name']
     file_path = os.path.join(DIR_DESTINATION, azure_file_name)
-    f = open(file_path, 'r', encoding = "utf-8")
+    f = open(file_path, 'r', encoding="utf-8")
     rows = []
     frow = list()
     i = 0
@@ -220,7 +225,9 @@ def show_table(request):
             rows.append(row[1:])
     f.close()
     return render(request, 'dashboard/show_table.html', context={'frow': frow,
-                                                                 'rows': rows, 'file_name':request.session['file_name_dict']['user_file_name']})
+                                                                 'rows': rows,
+                                                                 'file_name': request.session['file_name_dict'][
+                                                                     'user_file_name']})
 
 
 # graphs
@@ -232,11 +239,11 @@ def plotly(request):
     excel_data = list()
     excel_heading = list()
     DIR_DESTINATION = os.path.join(MEDIA_ROOT, str(request.session['user']))
-    file_path = os.path.join(DIR_DESTINATION,  request.session['file_name_dict']['azure_file_name'])
+    file_path = os.path.join(DIR_DESTINATION, request.session['file_name_dict']['azure_file_name'])
     if not os.path.exists(file_path):
         return render(request, 'basic.html', {'user_id': request.session['user']})
     else:
-        f = open(file_path, 'r',  encoding = "utf-8")
+        f = open(file_path, 'r', encoding="utf-8")
         rows = []
         frow = list()
         i = 0
@@ -250,16 +257,26 @@ def plotly(request):
                 excel_data.append(row[1:])
         f.close()
         return render(request, 'dashboard/plotly.html', context={"excel_data": excel_data,
-                                                                "excel_heading": excel_heading})
+                                                                 "excel_heading": excel_heading})
 
 
 # plotly graph
+def plotly_report_page(request):
+    if "user" not in request.session:
+        return render(request, 'basic.html')
+    return render(request, 'dashboard/plotly.html', context={'plot_div': plot_div,
+                                                             # 'table':table,
+                                                             "excel_data": excel_data,
+                                                             "excel_heading": excel_heading,
+                                                             'columns': all_C
+                                                             })
+
 
 def plotly_chart(request):
     if "user" not in request.session:
         return render(request, 'basic.html')
     DIR_DESTINATION = os.path.join(MEDIA_ROOT, str(request.session['user']))
-    file_path = os.path.join(DIR_DESTINATION,  request.session['file_name_dict']['azure_file_name'])
+    file_path = os.path.join(DIR_DESTINATION, request.session['file_name_dict']['azure_file_name'])
     if not os.path.exists(file_path):
         return render(request, 'basic.html', {'user_id': request.session['user']})
     df = pd.read_csv(file_path)
@@ -307,8 +324,8 @@ def plotly_chart(request):
     excel_data = list()
     excel_heading = list()
     DIR_DESTINATION = os.path.join(MEDIA_ROOT, str(request.session['user']))
-    file_path = os.path.join(DIR_DESTINATION,  request.session['file_name_dict']['azure_file_name'])
-    f = open(file_path, 'r',  encoding = "utf-8")
+    file_path = os.path.join(DIR_DESTINATION, request.session['file_name_dict']['azure_file_name'])
+    f = open(file_path, 'r', encoding="utf-8")
     rows = []
     frow = list()
     i = 0
@@ -321,21 +338,29 @@ def plotly_chart(request):
             row = row.strip('\n').split(',')
             excel_data.append(row[1:])
     f.close()
+    all_C = list(df.columns)
+    print("all_C", all_C)
     return render(request, 'dashboard/plotly.html', context={'plot_div': plot_div,
                                                              # 'table':table,
                                                              "excel_data": excel_data,
-                                                             "excel_heading": excel_heading
+                                                             "excel_heading": excel_heading,
+                                                             'columns': all_C
                                                              })
+
 
 def covid(request):
     return render(request, 'dashboard/covid.html')
+
+
+def vis(request):
+    return render(request, 'dashboard/vis.html')
 
 
 # user login logout
 
 def login(request):
     if "user" in request.session:
-        return render(request, 'basic.html',context={'user_id': request.session['user']})
+        return render(request, 'basic.html', context={'user_id': request.session['user']})
     else:
         return render(request, 'login.html')
 
@@ -413,26 +438,29 @@ def resetpasswrodform(request):
 
 
 def send_change_password_page(request):
-    return render(request,'reset-password.html')
+    return render(request, 'reset-password.html')
+
 
 def change_password_after_login(request):
     if "user" not in request.session:
         return render(request, 'basic.html')
-        
+
     user_id = request.session['user']
     user = Customer.objects.filter(user_id=user_id).first()
     new_password_first = request.POST.get('new_password_first')
     new_password_second = request.POST.get('new_password_second')
     current_password = request.POST.get('current_password')
     if new_password_first != new_password_second:
-        return render(request, 'reset-password.html', {'message': "new password and confirm password are different!", "success":"false"})
-    
+        return render(request, 'reset-password.html',
+                      {'message': "new password and confirm password are different!", "success": "false"})
+
     if user.password == current_password:
         Customer.objects.filter(user_id=user_id).update(password=new_password_second)
-        return render(request, 'reset-password.html', {'message': "Password changed successfully!", "success":"true"})
+        return render(request, 'reset-password.html', {'message': "Password changed successfully!", "success": "true"})
     else:
-        return render(request, 'reset-password.html', {'message': "invalid password", "success":"false"})
-    
+        return render(request, 'reset-password.html', {'message': "invalid password", "success": "false"})
+
+
 # forgot page email post request
 def resetpassword(request):
     email = request.POST.get('email')
@@ -505,9 +533,9 @@ def logout(request):
 
         try:
             DIR_DESTINATION = os.path.join(MEDIA_ROOT, str(request.session['user']))
-            for file in  os.listdir(DIR_DESTINATION):
+            for file in os.listdir(DIR_DESTINATION):
                 try:
-                    os.remove(os.path.join(DIR_DESTINATION,file))
+                    os.remove(os.path.join(DIR_DESTINATION, file))
                 except:
                     traceback.print_exc()
                     print(f"{file} - deletion failed")

@@ -7,6 +7,7 @@ import plotly.express as px
 import plotly.graph_objects as go
 import traceback
 from jupyter_dash import JupyterDash
+from django_plotly_dash import DjangoDash
 from urllib.request import urlopen
 import json
 
@@ -17,7 +18,7 @@ map_columns = pd.read_csv("https://raw.githubusercontent.com/plotly/datasets/mas
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
-app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
+app = DjangoDash("vis", external_stylesheets=external_stylesheets)
 
 # assume you have a "long-form" data frame
 # see https://plotly.com/python/px-arguments/ for more options
@@ -267,11 +268,11 @@ app.layout = html.Div(children=[
 
 
 @app.callback(
-    Output('graph1', 'figure'),
-    Input('xaxis-column1', 'value'),
-    Input('yaxis-column1', 'value'),
-    Input('graph_type1', 'value'),
-    Input('color1', 'value'),
+    [Output('graph1', 'figure')],
+    [Input('xaxis-column1', 'value'),
+     Input('yaxis-column1', 'value'),
+     Input('graph_type1', 'value'),
+     Input('color1', 'value')],
 )
 def update_graph1(xaxis1, yaxis1, graph1, color1):
     try:
@@ -295,18 +296,18 @@ def update_graph1(xaxis1, yaxis1, graph1, color1):
         elif graph_type == "bubble":
             fig1 = px.scatter(df, y=yaxis1, x=xaxis1, hover_data=df.columns, color=color1)
 
-        return fig1
+        return (fig1)
 
     except:
         traceback.print_exc()
 
 
 @app.callback(
-    Output('graph2', 'figure'),
-    Input('xaxis-column2', 'value'),
-    Input('yaxis-column2', 'value'),
-    Input('graph_type2', 'value'),
-    Input('color2', 'value'))
+    [Output('graph2', 'figure')],
+    [Input('xaxis-column2', 'value'),
+     Input('yaxis-column2', 'value'),
+     Input('graph_type2', 'value'),
+     Input('color2', 'value')])
 def update_graph2(xaxis2, yaxis2, graph2, color2):
     try:
         fig2 = go.Figure()
@@ -329,17 +330,17 @@ def update_graph2(xaxis2, yaxis2, graph2, color2):
             fig2 = px.density_heatmap(df, x=xaxis2, y=yaxis2)
         # elif graph_type == ""
         # print(fig2)
-        return fig2
+        return (fig2)
     except:
         traceback.print_exc()
 
 
 @app.callback(
-    Output('graph3', 'figure'),
-    Input('xaxis-column3', 'value'),
-    Input('yaxis-column3', 'value'),
-    Input('graph_type3', 'value'),
-    Input('color3', 'value'))
+    [Output('graph3', 'figure')],
+    [Input('xaxis-column3', 'value'),
+     Input('yaxis-column3', 'value'),
+     Input('graph_type3', 'value'),
+     Input('color3', 'value')])
 def update_graph3(xaxis3, yaxis3, graph3, color3):
     try:
         fig3 = go.Figure()
@@ -362,17 +363,17 @@ def update_graph3(xaxis3, yaxis3, graph3, color3):
             fig3 = px.scatter_geo(df, locations=xaxis3, color=color3,
                                   hover_name=df.columns,
                                   projection="natural earth")
-        return fig3
+        return (fig3)
     except:
         traceback.print_exc()
 
 
 @app.callback(
-    Output('graph4', 'figure'),
-    Input('xaxis-column4', 'value'),
-    Input('yaxis-column4', 'value'),
-    Input('zaxis-column4', 'value'),
-    Input('graph_type4', 'value'), )
+    [Output('graph4', 'figure')],
+    [Input('xaxis-column4', 'value'),
+     Input('yaxis-column4', 'value'),
+     Input('zaxis-column4', 'value'),
+     Input('graph_type4', 'value')])
 def update_graph4(xaxis4, yaxis4, zaxis4, graph4):
     try:
         fig4 = go.Figure()
@@ -391,10 +392,10 @@ def update_graph4(xaxis4, yaxis4, zaxis4, graph4):
             df = px.data.iris()
             fig4 = px.scatter_3d(df, x='sepal_length', y='sepal_width', z='petal_width',
                                  color='petal_length', symbol='species')
-        return fig4
+        return (fig4)
     except:
         traceback.print_exc()
 
-
-if __name__ == '__main__':
-    app.run_server(debug=True)
+#
+# if __name__ == '__main__':
+#     app.run_server(debug=True)

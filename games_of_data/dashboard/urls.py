@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-from .dash_apps.finished_apps import covid
+from .dash_apps.finished_apps import covid, ecom_test
 
 urlpatterns = [
     path('home/', views.home, name='home'),
@@ -15,6 +15,7 @@ urlpatterns = [
 
     path('plotly/', views.plotly, name="plotly"),
     path('show/plotly/', views.plotly_chart, name="plotly chart"),
+    path('show/plotly2/', views.plotly_chart, name="plotly chart"),
 
     path('email/verification/<str:time_stamp>', views.confirmation, name='reset'),
     # path('email/verification/<str:time_stamp>', views.confirmation, name='reset'),
@@ -37,5 +38,6 @@ urlpatterns = [
     # change profile picture
     path('profile/upload-new-profile-picture/<int:user_id>', views.upload_new_profile_picture, name="profile-picture"),
 
-    path('covid/', views.covid, name='custome')
+    path('covid/', views.covid, name='custome'),
+    path('vis/', views.vis, name='visualization')
 ]
