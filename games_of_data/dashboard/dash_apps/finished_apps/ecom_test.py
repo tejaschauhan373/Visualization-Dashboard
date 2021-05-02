@@ -292,7 +292,7 @@ def update_graph1(xaxis1, yaxis1, graph1, color1):
         if graph_type == "bar":
             # graph_type = graph_type.lower()
             # if graph_type == "pie"
-            fig1 = px.bar(df, y=yaxis1, x=xaxis1, text='pop', hover_data=df.columns, color=color1)
+            fig1 = px.bar(df, y=yaxis1, x=xaxis1,hover_data=df.columns, color=color1)
             fig1.update_traces(texttemplate='%{text:.2s}', textposition='outside')
             fig1.update_layout(uniformtext_minsize=8, uniformtext_mode='hide')
         elif graph_type == "pie":
