@@ -359,7 +359,7 @@ def update_graph3(xaxis3, yaxis3, graph3, color3):
         graph3 = graph3.lower()
         print(graph3)
         if graph3 == "choropleth":
-            fig3 = px.choropleth_mapbox(df, geojson=counties, locations=yaxis3, color=color3,
+            fig3 = px.choropleth_mapbox(df, geojson=xaxis3, locations=yaxis3, color=color3,
                                         range_color=(0, 12),
                                         color_continuous_scale="Viridis",
                                         mapbox_style="carto-positron",
