@@ -9,7 +9,9 @@ import traceback
 from jupyter_dash import JupyterDash
 from django_plotly_dash import DjangoDash
 from urllib.request import urlopen
+from django.conf import settings
 import json
+import os
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
@@ -263,9 +265,11 @@ app.layout = html.Div(children=[
     ], className='row'),
 ])
 
+file_path = os.path.join(settings.MEDIA_ROOT, "fips-unemp-16.csv")
 df1 = px.data.gapminder()
 df2 = px.data.tips()
-df = pd.read_csv(r"D:\dev-project\e-commerce-monitoring-system\games_of_data\assets\media\sample.csv")
+df = pd.read_csv(file_path,
+                 dtype={"fips": str})
 df_concat = pd.concat([df1, df2, df], axis=1)
 df = df_concat
 
