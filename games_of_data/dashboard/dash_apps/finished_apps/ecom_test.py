@@ -9,12 +9,9 @@ import traceback
 from jupyter_dash import JupyterDash
 from django_plotly_dash import DjangoDash
 from urllib.request import urlopen
+from django.conf import settings
 import json
-
-with urlopen('https://raw.githubusercontent.com/plotly/datasets/master/geojson-counties-fips.json') as response:
-    counties = json.load(response)
-map_columns = pd.read_csv("https://raw.githubusercontent.com/plotly/datasets/master/fips-unemp-16.csv",
-                          dtype={"fips": str}).columns
+import os
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
@@ -268,9 +265,10 @@ app.layout = html.Div(children=[
     ], className='row'),
 ])
 
+file_path = os.path.join(settings.MEDIA_ROOT, "fips-unemp-16.csv")
 df1 = px.data.gapminder()
 df2 = px.data.tips()
-df = pd.read_csv("https://raw.githubusercontent.com/plotly/datasets/master/fips-unemp-16.csv",
+df = pd.read_csv(file_path,
                  dtype={"fips": str})
 df_concat = pd.concat([df1, df2, df], axis=1)
 df = df_concat
