@@ -11,11 +11,6 @@ from django_plotly_dash import DjangoDash
 from urllib.request import urlopen
 import json
 
-with urlopen('https://raw.githubusercontent.com/plotly/datasets/master/geojson-counties-fips.json') as response:
-    counties = json.load(response)
-map_columns = pd.read_csv("https://raw.githubusercontent.com/plotly/datasets/master/fips-unemp-16.csv",
-                          dtype={"fips": str}).columns
-
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
 app = DjangoDash("vis", external_stylesheets=external_stylesheets)
@@ -116,7 +111,7 @@ app.layout = html.Div(children=[
                 id='graph1',
                 figure=fig1
             ),
-        ], className='six columns'),
+        ], className='six columns' , style={'width':'45%' , 'display':'inline-block'}),
         html.Div([
             html.H5(children='Statistical Plots'),
             html.Div([
@@ -163,7 +158,7 @@ app.layout = html.Div(children=[
                 id='graph2',
                 figure=fig2
             ),
-        ], className='six columns'),
+        ], className='six columns' ,style={'width':'45%' , 'display':'inline-block' , 'margin-left':'60px'}),
     ], className='row'),
     # New Div for all elements in the new 'row' of the page
     html.Div([
@@ -211,7 +206,7 @@ app.layout = html.Div(children=[
                 id='graph3',
                 figure=fig3
             ),
-        ], className='six columns'),
+        ], className='six columns' , style={'width':'45%' , 'display':'inline-block'}),
         html.Div([
             html.H5(children='3D Plots'),
             html.Div([
@@ -264,14 +259,13 @@ app.layout = html.Div(children=[
                 figure=fig4,
 
             ),
-        ], className='six columns'),
+        ], className='six columns' , style={'width':'45%' , 'display':'inline-block' , 'margin-left':'60px'}),
     ], className='row'),
 ])
 
 df1 = px.data.gapminder()
 df2 = px.data.tips()
-df = pd.read_csv("https://raw.githubusercontent.com/plotly/datasets/master/fips-unemp-16.csv",
-                 dtype={"fips": str})
+df = pd.read_csv(r"D:\dev-project\e-commerce-monitoring-system\games_of_data\assets\media\sample.csv")
 df_concat = pd.concat([df1, df2, df], axis=1)
 df = df_concat
 
