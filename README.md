@@ -30,12 +30,12 @@
  
  ## Run the Project
     
- * Open terminal and go to project (games_of_data) directory in terminal and run the command
+ * Open terminal and go to project (Visualization-Dashboard) directory in terminal and run the command
     
     ```
-    cd games_of_data
+    cd Visualization-Dashboard
     python manage.py migrate
     python manage.py runserver
     ```
   
-    - browse the [http://127.0.0.1:8000/](http://127.0.0.1:8000/)
+    - browse the [http://127.0.0.1:8000/dashboard/home/](http://127.0.0.1:8000//dashboard/home/)
