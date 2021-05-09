@@ -16,9 +16,9 @@
     $ source venv/bin/activate     # For Linux
     ```
  
- 3. Goto root directory named "games_of_data" of django project and Install dependencies
+ 3. Goto project directory named "Visualization-Dashboard" of django project and Install dependencies
     ```
-    cd games_of_data
+    cd Visualization-Dashboard
     pip install -r requirements.txt
     ```
  4. Make config.json file from example.config.json
