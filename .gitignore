@@ -35,6 +35,7 @@ venv
 .idea/**/gradle.xml
 .idea/**/libraries
 
+config.json
 **/migrations
 **/migrations/*
 # Gradle and Maven with auto-import
