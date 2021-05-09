@@ -1,0 +1,10 @@
+{
+  "default": {
+    "azure_connection_string": "your azure connection string",
+    "storage_account_name": "blob storage account name",
+    "storage_access_key": "storage account access akey",
+    "share_name": "blob storage share name",
+    "sender_mail": "sender mail address",
+    "sender_mail_pwd": "sender mail password"
+  }
+}

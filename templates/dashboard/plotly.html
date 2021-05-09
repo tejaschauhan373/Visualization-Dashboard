@@ -1,0 +1,123 @@
+{% extends 'basic.html' %}
+{%load static%}
+{%block content%}
+<style>
+    body{
+        background:none !important;
+    }
+</style>
+<div class="row">
+    <div class="col-auto mr-auto">
+        <div class="card mb-4" style="width:250px; margin-left:160px; margin-top:55px;">
+            <div class="card-body">
+                <form action="/dashboard/show/plotly/" method="post" id="chartform">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col">
+                            <div class="input-group sm-3">
+                                <div class="input-group-prepend">
+                                    <label class="input-group-text" for="inputGroupSelect01" style="height:35px;">Graphs</label>
+                                </div>
+                                <select class="custom-select" id="inputGroupSelect01" name="graph" style="height:35px;">
+                                    <option selected>Choose...</option>
+                                    <option value="Scatter">Scatter</option>
+                                    <option value="line">line</option>
+                                    <option value="bar">bar</option>
+                                    <option value="pie">pie</option>
+                                    <option value="bubble">bubble</option>
+                                    <option value="gantt">gantt</option>
+                                    <option value="box">box</option>
+                                    <option value="boxscatter">boxscatter</option>
+                                    <option value="violin">violin</option>
+                                    <option value="violin_box">violin_box</option>
+                                    <option value="violin_box_scatter">violin_box_scatter</option>
+                                    <option value="strip">strip</option>
+                                </select>
+                            </div>
+                            <hr>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <input type="text" class="form-control" style="height:30px;" name="x" placeholder="X parameter">
+                            <hr>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <input type="text" class="form-control" style="height:30px;" name="y" placeholder="Y parameter"><hr>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <input type="text" class="form-control" style="height:30px;" id = "color" name="color" placeholder="color">
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top:10px;text-align: center;">
+                        <div class="col">
+                            <div class="btn-group dropright">
+                                <input type="submit" class="btn btn-info" style="height:33px;" value="Submit">
+                            </div>
+                            <br>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col" style="background:white; margin-top:55px;">
+        <main>
+            <div class="container-fluid">
+                <hr>
+                <div class="table-responsive" style="height:270px;width:100%;">
+                    <table class="table table-bordered" id="dataTable" width="100%">
+                        <thead>
+                        <tr style="font-size:13px;">
+                            {%for heading in excel_heading%}
+                            <th>{{heading}}&nbsp;&nbsp;</th>
+                            {%endfor%}
+                        </tr>
+                        </thead>
+                        <!--                                        <tfoot>-->
+                        <!--                                             {%for heading in excel_heading%}-->
+                        <!--                                                    <th>{{heading}}&nbsp;&nbsp;</th>-->
+                        <!--                                                {%endfor%}-->
+                        <!--                                        </tfoot>-->
+                        <tbody>
+                        {% for row in excel_data %}
+                        <tr style="font-size:13px;">
+                            {% for cell in row %}
+                            <td>{{ cell }}&nbsp;&nbsp;</td>
+                            {%endfor%}
+                        </tr>
+                        {%endfor%}
+
+                        </tbody>
+                    </table>
+                </div>
+
+                {% autoescape on %}
+                {{ table |safe}}
+                {% endautoescape %}
+
+                {% autoescape on %}
+                {{ plot_div |safe}}
+                {% endautoescape %}
+
+            </div>
+        </main>
+        <!--                <footer class="py-4 bg-light mt-auto">-->
+        <!--                    <div class="container-fluid">-->
+        <!--                        <div class="d-flex align-items-center justify-content-between small">-->
+        <!--                            <div class="text-muted">Copyright &copy; Your Website 2020</div>-->
+        <!--                            <div>-->
+        <!--                                <a href="#">Privacy Policy</a>-->
+        <!--                                &middot;-->
+        <!--                                <a href="#">Terms &amp; Conditions</a>-->
+        <!--                            </div>-->
+        <!--                        </div>-->
+        <!--                    </div>-->
+        <!--                </footer>-->
+    </div>
+</div>
+{%endblock%}

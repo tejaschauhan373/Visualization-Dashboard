@@ -1,0 +1,85 @@
+{% extends 'basic.html' %}
+{%load static%}
+{%block content%}
+<div class="container" style="margin-top:30px;">
+        <div id="layoutAuthentication">
+            <div id="layoutAuthentication_content">
+                <main>
+                    <div class="container" style="margin-top:60px;">
+                        <div class="row justify-content-center">
+                            <div class="col-lg-7">
+                                <div class="card shadow-lg border-0 rounded-lg mt-5"  style="background:#343a40;color:white;">
+                                    <div class="card-header"><h3 class="text-center font-weight-light my-4">Create Account</h3></div>
+                                    <div class="card-body">
+                                        <form action="/dashboard/register/" method="post">
+                                            {% csrf_token %}
+                                            {% if error is not None%}
+                                                <div class="alert alert-warning" role="alert">
+                                                    {{error}}
+                                                </div>
+                                            {%endif%}
+                                            <div class="form-row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="small mb-1" for="inputFirstName">First Name</label>
+                                                        <input class="form-control py-4" id="inputFirstName" type="text" name="firstname" placeholder="Enter first name" required/>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="small mb-1" for="inputLastName">Last Name</label>
+                                                        <input class="form-control py-4" id="inputLastName" name="lastname" type="text" placeholder="Enter last name" required/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="small mb-1" for="inputEmailAddress">Username</label>
+                                                <input class="form-control py-4" id="inputEmailAddress" type="text"  name="username" aria-describedby="emailHelp" placeholder="Enter username" required/>
+                                            </div>
+                                             <div class="form-group">
+                                                <label class="small mb-1" for="inputEmailAddress">Email</label>
+                                                <input class="form-control py-4" id="Email" type="email"  name="email" aria-describedby="emailHelp" placeholder="Enter email" required/>
+                                            </div>
+                                            <div class="form-row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="small mb-1" for="inputPassword">Password</label>
+                                                        <input class="form-control py-4" id="inputPassword" type="password" name="password" placeholder="Enter password" required/>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="small mb-1" for="inputConfirmPassword">Confirm Password</label>
+                                                        <input class="form-control py-4" id="inputConfirmPassword" type="password" name="cpassword" placeholder="Confirm password" required/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <button class="btn btn-primary" type="submit">Create Account</button>
+                                        </form>
+                                    </div>
+                                    <div class="card-footer text-center">
+                                        <div class="small"><a href="/dashboard/login/">Have an account? Go to login</a></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+            </div>
+            <div id="layoutAuthentication_footer">
+                <footer class="py-4 px-4 mt-auto" style="background:#343a40;margin-left:100px;">
+                    <div class="container-fluid">
+                        <div class="d-flex align-items-center justify-content-between small">
+                            <div class="text-muted">Copyright &copy; Your Website 2020</div>
+                            <div>
+                                <a href="#">Privacy Policy</a>
+                                &middot;
+                                <a href="#">Terms &amp; Conditions</a>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+        </div>
+</div>
+{%endblock%}
