@@ -149,7 +149,7 @@ six==1.15.0
 smmap==3.0.4
 South==1.0.2
 sqlparse==0.3.1
-streamlit==0.69.2
+streamlit==1.11.1
 terminado==0.9.1
 testpath==0.4.4
 threadpoolctl==2.1.0
