@@ -38,7 +38,7 @@ click==7.1.2
 colorama==0.4.4
 constantly==15.1.0
 crypto==1.4.1
-cryptography==3.3.2
+cryptography==39.0.1
 cycler==0.10.0
 daphne==2.5.0
 dash==1.16.2
